@@ -1,0 +1,24 @@
+[application]
+name = "enerby-dev"
+default_platform = "web"
+
+[web.app]
+# HTML title tag content
+title = "enerby.dev | Full-Stack Developer"
+
+[web.watcher]
+watch_path = ["src", "assets"]
+reload_html = true
+
+[web.resource]
+# CSS style files
+style = ["assets/main.css"]
+# JavaScript files
+script = []
+
+[web.resource.dev]
+script = []
+
+# Output directory for static files
+[bundle]
+identifier = "dev.enerby.portfolio"
