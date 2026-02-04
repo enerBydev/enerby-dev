@@ -24,6 +24,15 @@ pulldown-cmark = "0.13"
 # Utilidades
 chrono = { version = "0.4", features = ["serde"] }
 
+# Íconos - Material Design Icons via dioxus-free-icons
+dioxus-free-icons = { version = "0.9", features = [
+    "material-design-icons-action",
+    "material-design-icons-communication", 
+    "material-design-icons-content",
+    "material-design-icons-navigation",
+    "material-design-icons-social"
+] }
+
 [features]
 default = ["web"]
 web = []

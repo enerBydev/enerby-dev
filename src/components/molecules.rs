@@ -76,17 +76,18 @@ pub fn Terminal(
     }
 }
 
-/// Glitch Text Component
+/// Glitch Text Component - Cyberpunk glitch effect on hover
+/// Usa CSS ::before/::after con data-text para el efecto glitch
 #[component]
 pub fn GlitchText(
     text: String,
     #[props(default = "text-4xl".to_string())] size_class: String,
 ) -> Element {
     rsx! {
-        div { class: "relative inline-block group",
-            span { class: "relative z-10 {size_class} font-display font-bold text-white", "{text}" }
-            span { class: "absolute top-0 left-0 -z-10 w-full h-full {size_class} font-display font-bold text-primary opacity-70 animate-glitch-1 hidden group-hover:block", "{text}" }
-            span { class: "absolute top-0 left-0 -z-10 w-full h-full {size_class} font-display font-bold text-secondary-pink opacity-70 animate-glitch-2 hidden group-hover:block", "{text}" }
+        span { 
+            class: "glitch-text relative inline-block {size_class} font-display font-bold text-white",
+            "data-text": "{text}",
+            "{text}"
         }
     }
 }

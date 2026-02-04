@@ -16,10 +16,10 @@ reload_html = true
 # Exclude target folder to prevent rebuild loops
 index_on_404 = true
 
-# Static Resources
+# Static Resources - CSS se maneja con asset!() en código Rust
 [web.resource]
-# CSS style files
-style = ["assets/main.css"]
+# CSS se incluye via document::Stylesheet en App() - método oficial Dioxus
+style = []
 # JavaScript files (none for pure Rust)
 script = []
 

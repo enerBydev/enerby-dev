@@ -1,0 +1,36 @@
+{
+  "name": "enerby.dev",
+  "version": "1.0.0",
+  "description": "Personal portfolio and blog built with **Dioxus** and **100% Rust**.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "tailwind:build": "npx @tailwindcss/cli -i ./input.css -o ./assets/tailwind.css --minify",
+    "tailwind:watch": "npx @tailwindcss/cli -i ./input.css -o ./assets/tailwind.css --watch",
+    "dev": "npm run tailwind:build && dx serve",
+    "dev:watch": "npm run tailwind:watch & dx serve",
+    "build": "npm run tailwind:build && dx build --release",
+    "test": "cargo test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enerBydev/enerby-dev.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/enerBydev/enerby-dev/issues"
+  },
+  "homepage": "https://github.com/enerBydev/enerby-dev#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18"
+  }
+}
