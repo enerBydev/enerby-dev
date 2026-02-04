@@ -49,9 +49,16 @@ pub fn Header() -> Element {
         header {
             class: "header glass sticky top-0 z-50 transition-all duration-300 backdrop-blur-md bg-opacity-90 bg-bg-primary/80 border-b border-white/5",
 
-            nav { class: "navbar container flex justify-center md:justify-between items-center py-3",
+            nav { class: "navbar container flex justify-between items-center py-3",
 
-                // Desktop Navigation
+                // Logo/Brand - Left side
+                Link {
+                    to: Route::HomePage {},
+                    class: "brand font-orbitron text-xl font-bold neon-text hover:scale-105 transition-transform",
+                    "enerby.dev"
+                }
+
+                // Desktop Navigation - Center/Right
                 ul { class: "nav-links hidden md:flex gap-8 items-center",
                     li {
                         Link {
