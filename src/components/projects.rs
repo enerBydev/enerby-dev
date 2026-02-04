@@ -1,11 +1,11 @@
 //! Projects Section and Detail Components
 //! Project showcase with filtering and detail views
 
-use dioxus::prelude::*;
-use crate::routes::Route;
+use crate::components::atoms::{Badge, Button, ButtonVariant};
+use crate::components::layout_components::{Container, Grid, Section};
 use crate::components::molecules::{Card, SectionTitle};
-use crate::components::atoms::{Button, ButtonVariant, Badge};
-use crate::components::layout_components::{Container, Section, Grid};
+use crate::routes::Route;
+use dioxus::prelude::*;
 
 /// Project Status (P9-A4)
 #[derive(Clone, PartialEq, Copy)]
@@ -23,7 +23,7 @@ impl ProjectStatus {
             Self::Archived => "Archived",
         }
     }
-    
+
     pub fn color(&self) -> &'static str {
         match self {
             Self::Featured => "cyan",
@@ -47,52 +47,77 @@ pub struct Project {
     pub image_placeholder: &'static str,
 }
 
-/// Get all projects data (P9-B1 - hardcoded for now, can be moved to TOML later)
+/// Get all projects data - Proyectos Reales del Usuario
 pub fn get_projects() -> Vec<Project> {
     vec![
+        // Featured GitHub Projects
         Project {
             id: "enerby-dev",
             title: "enerby.dev",
-            description: "Personal portfolio website built with Rust and Dioxus. Cyberpunk-themed with modern web technologies.",
-            long_description: "A fully-featured portfolio website showcasing my work, skills, and blog posts. Built entirely in Rust using the Dioxus framework, featuring a cyberpunk aesthetic with neon colors, glassmorphism, and smooth animations.",
+            description: "Portfolio personal construido con Rust y Dioxus. Temática cyberpunk con tecnologías web modernas.",
+            long_description: "Portfolio full-featured mostrando mi trabajo, skills y blog. Construido enteramente en Rust usando Dioxus, con estética cyberpunk, colores neon, glassmorphism y animaciones suaves.",
             technologies: vec!["Rust", "Dioxus", "WebAssembly", "Tailwind CSS"],
             status: ProjectStatus::Featured,
-            github_url: Some("https://github.com/enerbydev/enerby.dev"),
+            github_url: Some("https://github.com/enerBydev/enerby.dev"),
             demo_url: Some("https://enerby.dev"),
-            image_placeholder: "E",
+            image_placeholder: "🦀",
         },
         Project {
-            id: "rust-cli-tools",
-            title: "Rust CLI Tools",
-            description: "Collection of command-line utilities written in Rust for productivity and automation.",
-            long_description: "A suite of high-performance CLI tools built in Rust, including file processors, data transformers, and automation scripts. Designed with a focus on speed, reliability, and ergonomic APIs.",
-            technologies: vec!["Rust", "Clap", "Tokio", "Serde"],
-            status: ProjectStatus::Active,
-            github_url: Some("https://github.com/enerbydev/rust-cli-tools"),
+            id: "rust-projects",
+            title: "Rust Projects Collection",
+            description: "Colección de proyectos Rust incluyendo CLI tools, APIs y experimentos con WebAssembly.",
+            long_description: "Repositorio monorepo con múltiples proyectos Rust, desde herramientas CLI de productividad hasta APIs REST con Axum y experimentos con Dioxus y WebAssembly.",
+            technologies: vec!["Rust", "Axum", "SQLx", "Tokio", "Dioxus"],
+            status: ProjectStatus::Featured,
+            github_url: Some("https://github.com/enerBydev/rust_projects"),
             demo_url: None,
-            image_placeholder: "R",
+            image_placeholder: "⚙️",
         },
+        // Featured External Projects (Placeholders)
         Project {
-            id: "web-crawler",
-            title: "Async Web Crawler",
-            description: "High-performance asynchronous web crawler with configurable depth and rate limiting.",
-            long_description: "An async web crawler built with Tokio and reqwest, featuring configurable crawl depth, rate limiting, robots.txt compliance, and structured data extraction.",
-            technologies: vec!["Rust", "Tokio", "Reqwest", "Scraper"],
-            status: ProjectStatus::Active,
-            github_url: Some("https://github.com/enerbydev/web-crawler"),
-            demo_url: None,
-            image_placeholder: "W",
-        },
-        Project {
-            id: "legacy-project",
-            title: "Legacy Dashboard",
-            description: "Admin dashboard built with Vue.js and Node.js. No longer actively maintained.",
-            long_description: "A full-stack admin dashboard application featuring real-time analytics, user management, and reporting tools. Built during my earlier career with Vue.js frontend and Node.js backend.",
-            technologies: vec!["Vue.js", "Node.js", "PostgreSQL", "Docker"],
-            status: ProjectStatus::Archived,
+            id: "nuxt-saas-starter",
+            title: "Nuxt SaaS Starter",
+            description: "Template SaaS completo con Nuxt 3, Supabase Auth, Stripe y Capacitor para apps móviles.",
+            long_description: "Starter kit enterprise para construir aplicaciones SaaS con Nuxt 3. Incluye autenticación con Supabase, pagos con Stripe, deployado en Cloudflare y empaquetado móvil con Capacitor.",
+            technologies: vec!["Nuxt 3", "Vue.js", "Supabase", "Stripe", "Capacitor"],
+            status: ProjectStatus::Featured,
             github_url: None,
+            demo_url: Some("https://youtube.com"),
+            image_placeholder: "🚀",
+        },
+        Project {
+            id: "onlycar-platform",
+            title: "OnlyCar Platform",
+            description: "Plataforma web tipo Uber para servicio de transporte privado con arquitectura Hexagonal y DDD.",
+            long_description: "Sistema completo de transporte privado con arquitectura Hexagonal, Clean Architecture y DDD. Frontend en Nuxt 3, backend en Rust/Axum, base de datos PostgreSQL con Supabase.",
+            technologies: vec!["Nuxt 3", "Rust", "Axum", "Supabase", "Cloudflare"],
+            status: ProjectStatus::Featured,
+            github_url: None,
+            demo_url: Some("https://facebook.com"),
+            image_placeholder: "🚗",
+        },
+        // Active Projects
+        Project {
+            id: "dioxus-components",
+            title: "Dioxus Component Library",
+            description: "Librería de componentes UI reutilizables para Dioxus con Atomic Design y Storybook.",
+            long_description: "Design System completo para Dioxus siguiendo Atomic Design. Incluye átomos, moléculas y organismos con documentación interactiva y visual testing.",
+            technologies: vec!["Rust", "Dioxus", "Tailwind CSS", "Storybook"],
+            status: ProjectStatus::Active,
+            github_url: Some("https://github.com/enerBydev/dioxus-components"),
             demo_url: None,
-            image_placeholder: "L",
+            image_placeholder: "🎨",
+        },
+        Project {
+            id: "api-gateway",
+            title: "Rust API Gateway",
+            description: "Gateway API de alto rendimiento con rate limiting, caching y middleware personalizado.",
+            long_description: "API Gateway construido con Axum y Tower, featuring rate limiting inteligente, caching Redis, autenticación JWT y middleware extensible.",
+            technologies: vec!["Rust", "Axum", "Tower", "Redis", "JWT"],
+            status: ProjectStatus::Active,
+            github_url: Some("https://github.com/enerBydev/api-gateway"),
+            demo_url: Some("https://google.com"),
+            image_placeholder: "🔐",
         },
     ]
 }
@@ -106,18 +131,26 @@ pub fn get_project_by_id(id: &str) -> Option<Project> {
 #[component]
 pub fn ProjectsSection() -> Element {
     let projects = get_projects();
-    let featured: Vec<_> = projects.iter().filter(|p| p.status == ProjectStatus::Featured).cloned().collect();
-    let active: Vec<_> = projects.iter().filter(|p| p.status == ProjectStatus::Active).cloned().collect();
+    let featured: Vec<_> = projects
+        .iter()
+        .filter(|p| p.status == ProjectStatus::Featured)
+        .cloned()
+        .collect();
+    let active: Vec<_> = projects
+        .iter()
+        .filter(|p| p.status == ProjectStatus::Active)
+        .cloned()
+        .collect();
 
     rsx! {
         Section { id: "projects", alternate: true,
             Container {
-                SectionTitle { 
-                    text: "Projects".to_string(), 
+                SectionTitle {
+                    text: "Projects".to_string(),
                     subtitle: "What I've Built".to_string(),
-                    center: true 
+                    center: true
                 }
-                
+
                 // Featured Projects
                 if !featured.is_empty() {
                     div { class: "mb-12",
@@ -126,17 +159,17 @@ pub fn ProjectsSection() -> Element {
                         }
                     }
                 }
-                
+
                 // Active Projects Grid (P9-C3)
                 Grid { cols: 1, md_cols: 2, gap: 6,
                     for project in active.iter() {
                         ProjectCard { project: project.clone(), featured: false }
                     }
                 }
-                
+
                 // View All Button
                 div { class: "text-center mt-12",
-                    Button { 
+                    Button {
                         variant: ButtonVariant::Ghost,
                         to: Route::ProjectsPage {},
                         "View All Projects →"
@@ -150,12 +183,12 @@ pub fn ProjectsSection() -> Element {
 /// Project Card (P9-C2)
 #[component]
 pub fn ProjectCard(project: Project, #[props(default = false)] featured: bool) -> Element {
-    let card_class = if featured { 
-        "mb-8".to_string() 
-    } else { 
-        "h-full".to_string() 
+    let card_class = if featured {
+        "mb-8".to_string()
+    } else {
+        "h-full".to_string()
     };
-    
+
     rsx! {
         Card { hover_effect: true, class: card_class,
             div { class: if featured { "lg:flex gap-8" } else { "" },
@@ -165,35 +198,35 @@ pub fn ProjectCard(project: Project, #[props(default = false)] featured: bool) -
                         span { class: "text-4xl font-display font-bold text-white/60", "{project.image_placeholder}" }
                     }
                 }
-                
+
                 // Content
                 div { class: if featured { "lg:w-2/3" } else { "" },
                     // Status badge
                     div { class: "flex items-center gap-2 mb-2",
                         Badge { color: project.status.color().to_string(), "{project.status.label()}" }
                     }
-                    
+
                     // Title
                     h3 { class: "text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors",
                         "{project.title}"
                     }
-                    
+
                     // Description
                     p { class: "text-muted text-sm mb-4 line-clamp-2",
                         "{project.description}"
                     }
-                    
+
                     // Technologies
                     div { class: "flex flex-wrap gap-2 mb-4",
                         for tech in project.technologies.iter() {
                             span { class: "text-xs px-2 py-1 bg-white/5 rounded text-secondary", "{tech}" }
                         }
                     }
-                    
+
                     // Links
                     div { class: "flex gap-3",
                         if let Some(github) = project.github_url {
-                            Button { 
+                            Button {
                                 variant: ButtonVariant::Ghost,
                                 href: Some(github.to_string()),
                                 new_tab: true,
@@ -201,7 +234,7 @@ pub fn ProjectCard(project: Project, #[props(default = false)] featured: bool) -
                             }
                         }
                         if let Some(demo) = project.demo_url {
-                            Button { 
+                            Button {
                                 variant: ButtonVariant::Neon,
                                 href: Some(demo.to_string()),
                                 new_tab: true,

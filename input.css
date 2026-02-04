@@ -58,10 +58,10 @@
     --shadow-glow-lg: 0 0 30px rgba(0, 255, 255, 0.5), 0 0 60px rgba(0, 255, 255, 0.3);
     --shadow-neon: 0 0 10px #00FFFF40, inset 0 0 10px #00FFFF20;
 
-    /* Animaciones */
-    --animate-glitch: glitch 3s infinite;
-    --animate-glitch-1: glitch-1 0.3s infinite;
-    --animate-glitch-2: glitch-2 0.3s infinite;
+    /* Animaciones - Sutiles y orgánicas */
+    --animate-glitch: glitch 6s ease-in-out infinite;
+    --animate-glitch-1: glitch-1 0.5s ease-in-out infinite;
+    --animate-glitch-2: glitch-2 0.5s ease-in-out infinite;
     --animate-glow-pulse: glow-pulse 2s ease-in-out infinite;
     --animate-float: float 3s ease-in-out infinite;
     --animate-float-delayed: float 3s ease-in-out infinite 1.5s;
@@ -74,78 +74,69 @@
     /* Keyframes */
     @keyframes glitch {
 
+        /* Efecto sutil - menos frecuente y más suave */
         0%,
-        90%,
+        94%,
         100% {
             transform: translate(0);
             filter: none;
         }
 
-        92% {
-            transform: translate(-2px, 1px);
-            filter: hue-rotate(90deg);
+        95% {
+            transform: translate(-1px, 0.5px);
+            filter: hue-rotate(30deg);
         }
 
-        94% {
-            transform: translate(2px, -1px);
-            filter: hue-rotate(-90deg);
+        97% {
+            transform: translate(1px, -0.5px);
+            filter: hue-rotate(-30deg);
         }
 
-        96% {
-            transform: translate(-1px, 2px);
-        }
-
-        98% {
-            transform: translate(1px, -2px);
-            filter: saturate(2);
+        99% {
+            transform: translate(-0.5px, 1px);
+            filter: saturate(1.2);
         }
     }
 
     @keyframes glitch-1 {
 
+        /* Efecto sutil para pseudo-elementos */
         0%,
         100% {
             transform: translate(0);
         }
 
-        20% {
-            transform: translate(-2px, 2px);
+        25% {
+            transform: translate(-1px, 1px);
         }
 
-        40% {
-            transform: translate(-2px, -2px);
+        50% {
+            transform: translate(1px, -1px);
         }
 
-        60% {
-            transform: translate(2px, 2px);
-        }
-
-        80% {
-            transform: translate(2px, -2px);
+        75% {
+            transform: translate(-0.5px, -0.5px);
         }
     }
 
     @keyframes glitch-2 {
 
+        /* Efecto sutil complementario */
         0%,
         100% {
             transform: translate(0);
         }
 
-        20% {
-            transform: translate(2px, -2px);
+        25% {
+            transform: translate(1px, -1px);
         }
 
-        40% {
-            transform: translate(2px, 2px);
+        50% {
+            transform: translate(-1px, 1px);
         }
 
-        60% {
-            transform: translate(-2px, -2px);
-        }
-
-        80% {
-            transform: translate(-2px, 2px);
+        75% {
+            transform: translate(0.5px, 0.5px);
         }
     }
 

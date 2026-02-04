@@ -2,9 +2,9 @@
 //! Tests for component props and behavior
 
 use crate::components::atoms::ButtonVariant;
-use crate::components::projects::ProjectStatus;
 use crate::components::blog::PostStatus;
 use crate::components::contact::FormState;
+use crate::components::projects::ProjectStatus;
 
 // =============================================================================
 // Enum Variant Tests
@@ -64,7 +64,7 @@ fn test_email_validation_logic() {
     fn is_valid_email(email: &str) -> bool {
         email.contains('@') && email.contains('.') && email.len() > 5
     }
-    
+
     assert!(is_valid_email("test@example.com"));
     assert!(is_valid_email("user@domain.org"));
     assert!(!is_valid_email("invalid"));
@@ -77,7 +77,7 @@ fn test_message_length_validation() {
     // Message should be at least 20 characters
     let short_msg = "Hi";
     let valid_msg = "This is a valid message that is long enough";
-    
+
     assert!(short_msg.len() < 20);
     assert!(valid_msg.len() >= 20);
 }

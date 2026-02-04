@@ -1,13 +1,13 @@
 //! 404 Not Found Page
 
-use dioxus::prelude::*;
 use crate::routes::Route;
+use dioxus::prelude::*;
 
 /// 404 Not Found page
 #[component]
 pub fn NotFoundPage(route: Vec<String>) -> Element {
     let path = route.join("/");
-    
+
     rsx! {
         section { class: "section",
             div { class: "container",

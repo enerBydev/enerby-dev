@@ -12,14 +12,18 @@ pub fn Card(
     #[props(default = false)] no_padding: bool,
 ) -> Element {
     let base_class = "relative overflow-hidden rounded-lg bg-bg-card backdrop-blur-md border border-white/5 transition-all duration-300";
-    let hover_class = if hover_effect { "hover:border-primary/50 hover:shadow-glow-sm hover:-translate-y-1 group" } else { "" };
+    let hover_class = if hover_effect {
+        "hover:border-primary/50 hover:shadow-glow-sm hover:-translate-y-1 group"
+    } else {
+        ""
+    };
     let padding_class = if no_padding { "" } else { "p-6" };
-    
+
     rsx! {
-        div { 
+        div {
             class: "{base_class} {hover_class} {padding_class} {class}",
             {children}
-            
+
             // Corner Accents (Cyberpunk style)
             div { class: "absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/30 rounded-tl-sm" }
             div { class: "absolute top-0 right-0 w-2 h-2 border-t border-r border-primary/30 rounded-tr-sm" }
@@ -36,8 +40,12 @@ pub fn SectionTitle(
     #[props(default = "".to_string())] subtitle: String,
     #[props(default = false)] center: bool,
 ) -> Element {
-    let align_class = if center { "text-center items-center" } else { "text-left items-start" };
-    
+    let align_class = if center {
+        "text-center items-center"
+    } else {
+        "text-left items-start"
+    };
+
     rsx! {
         div { class: "flex flex-col mb-12 {align_class}",
             h2 { class: "text-3xl md:text-4xl font-display font-bold text-white mb-2 relative inline-block",
@@ -53,10 +61,7 @@ pub fn SectionTitle(
 
 /// Code Terminal Component
 #[component]
-pub fn Terminal(
-    title: String,
-    children: Element,
-) -> Element {
+pub fn Terminal(title: String, children: Element) -> Element {
     rsx! {
         div { class: "rounded-lg overflow-hidden bg-[#0F0F16] border border-white/10 font-mono text-sm shadow-xl w-full",
             // Terminal Header
@@ -84,7 +89,7 @@ pub fn GlitchText(
     #[props(default = "text-4xl".to_string())] size_class: String,
 ) -> Element {
     rsx! {
-        span { 
+        span {
             class: "glitch-text relative inline-block {size_class} font-display font-bold text-white",
             "data-text": "{text}",
             "{text}"
@@ -113,7 +118,7 @@ pub fn ProgressBar(
                 span { class: "text-sm font-medium text-muted", "{percentage}%" }
             }
             div { class: "w-full bg-white/5 rounded-full h-2.5 overflow-hidden border border-white/5",
-                div { 
+                div {
                     class: "h-2.5 rounded-full {color_class} transition-all duration-1000 ease-out",
                     style: "width: {width}"
                 }

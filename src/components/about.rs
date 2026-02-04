@@ -1,9 +1,9 @@
 //! About Section Component
 //! Biography, timeline, and interests
 
-use dioxus::prelude::*;
+use crate::components::layout_components::{Container, Section};
 use crate::components::molecules::{Card, SectionTitle};
-use crate::components::layout_components::{Container, Section, Grid};
+use dioxus::prelude::*;
 
 /// About Section - Biography and experience
 #[component]
@@ -12,11 +12,11 @@ pub fn AboutSection() -> Element {
         Section { id: "about", alternate: true,
             Container {
                 // Section Title (P7-A2)
-                SectionTitle { 
-                    text: "About Me".to_string(), 
-                    subtitle: "Who I Am".to_string() 
+                SectionTitle {
+                    text: "About Me".to_string(),
+                    subtitle: "Who I Am".to_string()
                 }
-                
+
                 div { class: "grid lg:grid-cols-2 gap-12",
                     // Left: Bio (P7-A3)
                     div { class: "space-y-6",
@@ -25,11 +25,11 @@ pub fn AboutSection() -> Element {
                             span { class: "text-primary font-semibold", "Rust" }
                             " and modern web technologies. With a deep love for clean architecture, performance optimization, and cyberpunk aesthetics, I craft digital experiences that are both beautiful and blazingly fast."
                         }
-                        
+
                         p { class: "text-muted leading-relaxed",
                             "My journey in tech started with curiosity and evolved into a passion for building tools that make a difference. I believe in the power of open source, continuous learning, and pushing the boundaries of what's possible."
                         }
-                        
+
                         // Highlights/Facts (P7-A4)
                         div { class: "grid grid-cols-2 gap-4 mt-8",
                             HighlightCard { number: "5+", label: "Years Experience" }
@@ -38,14 +38,14 @@ pub fn AboutSection() -> Element {
                             HighlightCard { number: "∞", label: "Lines of Code" }
                         }
                     }
-                    
+
                     // Right: Timeline (P7-B)
                     div {
                         h3 { class: "text-xl font-bold text-white mb-6 flex items-center gap-2",
                             span { class: "text-primary", "▸" }
                             "Experience Timeline"
                         }
-                        
+
                         Timeline {
                             TimelineItem {
                                 year: "2024 - Present".to_string(),
@@ -68,36 +68,6 @@ pub fn AboutSection() -> Element {
                         }
                     }
                 }
-                
-                // Interests Section (P7-C)
-                div { class: "mt-16",
-                    h3 { class: "text-xl font-bold text-white mb-6 text-center",
-                        "Beyond Code"
-                    }
-                    
-                    Grid { cols: 2, md_cols: 4, gap: 4,
-                        InterestCard { 
-                            emoji: "🎮".to_string(), 
-                            title: "Gaming".to_string(),
-                            description: "RPGs & Cyberpunk themes".to_string()
-                        }
-                        InterestCard { 
-                            emoji: "🎵".to_string(), 
-                            title: "Music".to_string(),
-                            description: "Synthwave & Electronic".to_string()
-                        }
-                        InterestCard { 
-                            emoji: "📚".to_string(), 
-                            title: "Learning".to_string(),
-                            description: "Always exploring new tech".to_string()
-                        }
-                        InterestCard { 
-                            emoji: "🌃".to_string(), 
-                            title: "Aesthetics".to_string(),
-                            description: "Cyberpunk & Neon".to_string()
-                        }
-                    }
-                }
             }
         }
     }
@@ -115,17 +85,12 @@ pub fn Timeline(children: Element) -> Element {
 
 /// Timeline Item (P7-B2)
 #[component]
-pub fn TimelineItem(
-    year: String,
-    title: String,
-    company: String,
-    description: String,
-) -> Element {
+pub fn TimelineItem(year: String, title: String, company: String, description: String) -> Element {
     rsx! {
         div { class: "relative group animate-fade-in-up",
             // Timeline dot
             div { class: "absolute -left-[2.56rem] top-0 w-4 h-4 rounded-full border-2 border-primary bg-bg-primary group-hover:bg-primary transition-colors" }
-            
+
             // Content
             div { class: "bg-bg-card/50 p-4 rounded-lg border border-white/5 group-hover:border-primary/30 transition-all",
                 span { class: "text-xs text-primary font-mono", "{year}" }
@@ -150,16 +115,4 @@ fn HighlightCard(number: &'static str, label: &'static str) -> Element {
     }
 }
 
-/// Interest Card (P7-C2)
-#[component]
-fn InterestCard(emoji: String, title: String, description: String) -> Element {
-    rsx! {
-        Card { hover_effect: true,
-            div { class: "text-center py-4",
-                span { class: "text-4xl block mb-2", "{emoji}" }
-                h4 { class: "font-bold text-white", "{title}" }
-                p { class: "text-xs text-muted mt-1", "{description}" }
-            }
-        }
-    }
-}
+// InterestCard component removed - Beyond Code section eliminated

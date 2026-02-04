@@ -62,7 +62,10 @@ fn test_calculate_read_time_long() {
     // ~1000 words (200 words per minute = 5 minutes)
     let long_content = "word ".repeat(1000);
     let time = calculate_read_time(&long_content);
-    assert!(time >= 4 && time <= 6, "Should calculate ~5 minutes for 1000 words");
+    assert!(
+        time >= 4 && time <= 6,
+        "Should calculate ~5 minutes for 1000 words"
+    );
 }
 
 #[test]

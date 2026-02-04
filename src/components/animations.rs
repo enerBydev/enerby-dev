@@ -17,7 +17,7 @@ pub fn AnimateOnScroll(
     } else {
         String::new()
     };
-    
+
     let animation_class = match animation.as_str() {
         "slide-up" => "animate-fade-in-up",
         "slide-left" => "animate-slide-left",
@@ -25,9 +25,9 @@ pub fn AnimateOnScroll(
         "scale" => "animate-scale-in",
         _ => "animate-fade-in",
     };
-    
+
     rsx! {
-        div { 
+        div {
             class: "{animation_class}",
             style: "{delay_style}",
             {children}
@@ -37,12 +37,13 @@ pub fn AnimateOnScroll(
 
 /// Glitch effect wrapper (P12-B1)
 #[component]
-pub fn GlitchEffect(
-    children: Element,
-    #[props(default = false)] continuous: bool,
-) -> Element {
-    let class = if continuous { "glitch-continuous" } else { "glitch-hover" };
-    
+pub fn GlitchEffect(children: Element, #[props(default = false)] continuous: bool) -> Element {
+    let class = if continuous {
+        "glitch-continuous"
+    } else {
+        "glitch-hover"
+    };
+
     rsx! {
         div { class: "relative inline-block {class}",
             {children}
@@ -61,7 +62,7 @@ pub fn NeonFlicker(
         "purple" => "neon-flicker-purple",
         _ => "neon-flicker-cyan",
     };
-    
+
     rsx! {
         span { class: "{color_class}",
             {children}
@@ -71,10 +72,7 @@ pub fn NeonFlicker(
 
 /// Staggered animation container for lists (P12-A3)
 #[component]
-pub fn StaggerContainer(
-    children: Element,
-    #[props(default = 100)] stagger_ms: u32,
-) -> Element {
+pub fn StaggerContainer(children: Element, #[props(default = 100)] stagger_ms: u32) -> Element {
     // Each child would get increasing delay
     // Implementation note: Full implementation would require enumerating children
     rsx! {
@@ -87,14 +85,11 @@ pub fn StaggerContainer(
 
 /// Floating animation (P12-D3)
 #[component]
-pub fn FloatingElement(
-    children: Element,
-    #[props(default = 0)] offset: i32,
-) -> Element {
+pub fn FloatingElement(children: Element, #[props(default = 0)] offset: i32) -> Element {
     let delay = format!("animation-delay: {}ms;", offset * 200);
-    
+
     rsx! {
-        div { 
+        div {
             class: "animate-float",
             style: "{delay}",
             {children}
@@ -113,9 +108,9 @@ pub fn PulseGlow(
         "purple" => "rgba(157, 0, 255, 0.5)",
         _ => "rgba(0, 255, 255, 0.5)",
     };
-    
+
     rsx! {
-        div { 
+        div {
             class: "animate-pulse-glow",
             style: "--glow-color: {shadow_color};",
             {children}

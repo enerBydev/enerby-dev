@@ -1,8 +1,8 @@
 //! Data Module - Types and structures for content
 //! Defines Project, BlogPost, Skill and other data types
 
-use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 /// Project data structure
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]

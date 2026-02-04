@@ -1,6 +1,8 @@
 //! Utils Module - Helper functions
 //! Common utilities for formatting, parsing, etc.
 
+pub mod markdown_loader;
+
 use pulldown_cmark::{Parser, html};
 
 /// Convert markdown string to HTML
@@ -90,7 +92,7 @@ mod tests {
         assert!(html.contains("<h1>Hello</h1>"));
         assert!(html.contains("<strong>bold</strong>"));
     }
-    
+
     #[test]
     fn test_is_external_link() {
         assert!(is_external_link("https://example.com"));

@@ -34,7 +34,7 @@ pub fn Grid(
         4 => "grid-cols-4",
         _ => "grid-cols-1",
     };
-    
+
     let md_cols_class = match md_cols {
         1 => "md:grid-cols-1",
         2 => "md:grid-cols-2",
@@ -58,10 +58,14 @@ pub fn Section(
     #[props(default = "".to_string())] id: String,
     #[props(default = "".to_string())] class: String,
 ) -> Element {
-    let bg_class = if alternate { "bg-bg-secondary/30" } else { "bg-transparent" };
-    
+    let bg_class = if alternate {
+        "bg-bg-secondary/30"
+    } else {
+        "bg-transparent"
+    };
+
     rsx! {
-        section { 
+        section {
             id: "{id}",
             class: "py-16 md:py-24 relative overflow-hidden {bg_class} {class}",
             {children}
@@ -71,9 +75,7 @@ pub fn Section(
 
 /// Vertical Spacer
 #[component]
-pub fn Spacer(
-    #[props(default = 8)] h: u8,
-) -> Element {
+pub fn Spacer(#[props(default = 8)] h: u8) -> Element {
     rsx! {
         div { class: "h-{h}" }
     }

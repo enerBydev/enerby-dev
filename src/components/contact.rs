@@ -1,14 +1,13 @@
 //! Contact Section Component
 //! Contact form with validation and alternative contact info
 
-use dioxus::prelude::*;
+use crate::components::atoms::{Badge, Button, ButtonVariant};
+use crate::components::layout_components::{Container, Grid, Section};
 use crate::components::molecules::{Card, SectionTitle};
-use crate::components::atoms::{Button, ButtonVariant, Badge};
-use crate::components::layout_components::{Container, Section, Grid};
+use dioxus::prelude::*;
 
 /// Form State (P11-C)
-#[derive(Clone, PartialEq)]
-#[derive(Debug)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum FormState {
     Idle,
     Loading,
@@ -36,7 +35,10 @@ struct ValidationErrors {
 
 impl ValidationErrors {
     fn has_errors(&self) -> bool {
-        self.name.is_some() || self.email.is_some() || self.subject.is_some() || self.message.is_some()
+        self.name.is_some()
+            || self.email.is_some()
+            || self.subject.is_some()
+            || self.message.is_some()
     }
 }
 
@@ -48,27 +50,27 @@ fn is_valid_email(email: &str) -> bool {
 /// Validate form (P11-B1, P11-B2, P11-B3)
 fn validate_form(data: &ContactFormData) -> ValidationErrors {
     let mut errors = ValidationErrors::default();
-    
+
     if data.name.trim().is_empty() {
         errors.name = Some("Name is required".to_string());
     }
-    
+
     if data.email.trim().is_empty() {
         errors.email = Some("Email is required".to_string());
     } else if !is_valid_email(&data.email) {
         errors.email = Some("Please enter a valid email".to_string());
     }
-    
+
     if data.subject.trim().is_empty() {
         errors.subject = Some("Subject is required".to_string());
     }
-    
+
     if data.message.trim().is_empty() {
         errors.message = Some("Message is required".to_string());
     } else if data.message.len() < 20 {
         errors.message = Some("Message must be at least 20 characters".to_string());
     }
-    
+
     errors
 }
 
@@ -78,18 +80,18 @@ pub fn ContactSection() -> Element {
     rsx! {
         Section { id: "contact", alternate: true,
             Container {
-                SectionTitle { 
-                    text: "Get In Touch".to_string(), 
+                SectionTitle {
+                    text: "Get In Touch".to_string(),
                     subtitle: "Let's Work Together".to_string(),
-                    center: true 
+                    center: true
                 }
-                
+
                 div { class: "grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto",
                     // Contact Form
                     div {
                         ContactForm {}
                     }
-                    
+
                     // Contact Info (P11-E)
                     div { class: "space-y-6",
                         ContactInfoCard {}
@@ -107,21 +109,21 @@ fn ContactForm() -> Element {
     let mut form_data = use_signal(ContactFormData::default);
     let mut errors = use_signal(ValidationErrors::default);
     let mut form_state = use_signal(|| FormState::Idle);
-    
+
     let on_submit = move |evt: FormEvent| {
         evt.prevent_default();
-        
+
         // Validate
         let validation_errors = validate_form(&form_data());
         errors.set(validation_errors.clone());
-        
+
         if validation_errors.has_errors() {
             return;
         }
-        
+
         // Simulate submission (P11-D1 placeholder)
         form_state.set(FormState::Loading);
-        
+
         // In a real app, this would be an async call
         // For now, simulate success after "submission"
         spawn(async move {
@@ -129,7 +131,7 @@ fn ContactForm() -> Element {
             form_state.set(FormState::Success);
         });
     };
-    
+
     // Reset form (P11-C4)
     let reset_form = move |_| {
         form_data.set(ContactFormData::default());
@@ -145,7 +147,7 @@ fn ContactForm() -> Element {
                         div { class: "text-5xl mb-4", "✅" }
                         h3 { class: "text-xl font-bold text-primary mb-2", "Message Sent!" }
                         p { class: "text-muted mb-4", "Thank you for reaching out. I'll get back to you soon." }
-                        Button { 
+                        Button {
                             variant: ButtonVariant::Ghost,
                             onclick: reset_form,
                             "Send Another Message"
@@ -157,7 +159,7 @@ fn ContactForm() -> Element {
                         div { class: "text-5xl mb-4", "❌" }
                         h3 { class: "text-xl font-bold text-red-400 mb-2", "Something went wrong" }
                         p { class: "text-muted mb-4", "{msg}" }
-                        Button { 
+                        Button {
                             variant: ButtonVariant::Ghost,
                             onclick: reset_form,
                             "Try Again"
@@ -165,10 +167,10 @@ fn ContactForm() -> Element {
                     }
                 },
                 _ => rsx! {
-                    form { 
+                    form {
                         onsubmit: on_submit,
                         class: "space-y-4",
-                        
+
                         // Name Field (P11-A3)
                         FormField {
                             label: "Name".to_string(),
@@ -180,7 +182,7 @@ fn ContactForm() -> Element {
                                 form_data.write().name = evt.value();
                             }
                         }
-                        
+
                         // Email Field (P11-A4)
                         FormField {
                             label: "Email".to_string(),
@@ -192,7 +194,7 @@ fn ContactForm() -> Element {
                                 form_data.write().email = evt.value();
                             }
                         }
-                        
+
                         // Subject Field (P11-A5)
                         FormField {
                             label: "Subject".to_string(),
@@ -204,7 +206,7 @@ fn ContactForm() -> Element {
                                 form_data.write().subject = evt.value();
                             }
                         }
-                        
+
                         // Message Field (P11-A6)
                         div { class: "space-y-1",
                             label { class: "text-sm font-medium text-secondary", "Message" }
@@ -221,10 +223,10 @@ fn ContactForm() -> Element {
                                 p { class: "text-xs text-red-400", "{error}" }
                             }
                         }
-                        
+
                         // Submit Button (P11-A7)
                         div { class: "pt-4",
-                            Button { 
+                            Button {
                                 variant: ButtonVariant::Neon,
                                 class: "w-full".to_string(),
                                 if matches!(form_state(), FormState::Loading) {
@@ -251,8 +253,12 @@ fn FormField(
     error: Option<String>,
     oninput: EventHandler<FormEvent>,
 ) -> Element {
-    let border_class = if error.is_some() { "border-red-400" } else { "border-white/10" };
-    
+    let border_class = if error.is_some() {
+        "border-red-400"
+    } else {
+        "border-white/10"
+    };
+
     rsx! {
         div { class: "space-y-1",
             label { class: "text-sm font-medium text-secondary", "{label}" }
@@ -276,21 +282,21 @@ fn ContactInfoCard() -> Element {
     rsx! {
         Card {
             h3 { class: "text-lg font-bold text-white mb-4", "Contact Info" }
-            
+
             div { class: "space-y-4",
                 // Email
                 div { class: "flex items-center gap-3",
                     span { class: "text-2xl", "📧" }
                     div {
                         p { class: "text-xs text-muted", "Email" }
-                        a { 
+                        a {
                             class: "text-primary hover:underline",
                             href: "mailto:hello@enerby.dev",
                             "hello@enerby.dev"
                         }
                     }
                 }
-                
+
                 // Location
                 div { class: "flex items-center gap-3",
                     span { class: "text-2xl", "📍" }
@@ -299,7 +305,7 @@ fn ContactInfoCard() -> Element {
                         p { class: "text-secondary", "Mexico 🇲🇽" }
                     }
                 }
-                
+
                 // Availability
                 div { class: "flex items-center gap-3",
                     span { class: "text-2xl", "⏰" }
@@ -321,11 +327,11 @@ fn SocialLinks() -> Element {
         ("LinkedIn", "https://linkedin.com/in/enerbydev", "💼"),
         ("Twitter", "https://twitter.com/enerbydev", "🐦"),
     ];
-    
+
     rsx! {
         Card {
             h3 { class: "text-lg font-bold text-white mb-4", "Connect" }
-            
+
             div { class: "flex gap-4",
                 for (name, url, emoji) in socials.iter() {
                     a {

@@ -4,14 +4,14 @@
 use dioxus::prelude::*;
 
 // Module declarations
-mod routes;
+mod components;
 mod config;
 mod data;
-mod utils;
-mod theme;
-mod pages;
 mod layouts;
-mod components;
+mod pages;
+mod routes;
+mod theme;
+mod utils;
 
 #[cfg(test)]
 mod tests;
@@ -35,15 +35,15 @@ fn App() -> Element {
         document::Link { rel: "icon", href: FAVICON }
         document::Stylesheet { href: TAILWIND_CSS }
         document::Title { "{config::SITE.title}" }
-        document::Meta { 
-            name: "description", 
-            content: "{config::SITE.description}" 
+        document::Meta {
+            name: "description",
+            content: "{config::SITE.description}"
         }
-        document::Meta { 
-            name: "viewport", 
-            content: "width=device-width, initial-scale=1.0" 
+        document::Meta {
+            name: "viewport",
+            content: "width=device-width, initial-scale=1.0"
         }
-        
+
         // Router
         Router::<Route> {}
     }

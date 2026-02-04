@@ -3,15 +3,15 @@
 
 use dioxus::prelude::*;
 
+use crate::layouts::root::RootLayout;
 use crate::pages::{
-    home::HomePage,
     about::AboutPage,
-    projects::{ProjectsPage, ProjectDetailPage},
     blog::{BlogPage, BlogPostPage},
     contact::ContactPage,
+    home::HomePage,
     not_found::NotFoundPage,
+    projects::{ProjectDetailPage, ProjectsPage},
 };
-use crate::layouts::root::RootLayout;
 
 /// Main application routes
 #[derive(Clone, Routable, Debug, PartialEq)]

@@ -1,8 +1,8 @@
 //! SEO Module
 //! Components for meta tags, Open Graph, and Twitter Cards
 
-use dioxus::prelude::*;
 use crate::config::SITE;
+use dioxus::prelude::*;
 
 /// Page metadata for SEO
 #[derive(Clone, Default)]
@@ -28,13 +28,13 @@ pub fn SeoHead(
         Some(ref t) => format!("{} | {}", t, SITE.title),
         None => SITE.title.to_string(),
     };
-    
+
     // Use provided or default description (P13-A2)
     let meta_description = description.unwrap_or_else(|| SITE.description.to_string());
-    
+
     // Default OG image
     let og_image = image.unwrap_or_else(|| format!("{}/og-image.png", SITE.base_url));
-    
+
     // Canonical URL (P13-A3)
     let canonical_url = canonical.unwrap_or_else(|| SITE.base_url.to_string());
 
@@ -44,10 +44,10 @@ pub fn SeoHead(
         document::Meta { name: "description", content: "{meta_description}" }
         document::Meta { name: "author", content: "{SITE.author}" }
         document::Meta { name: "robots", content: "index, follow" }
-        
+
         // Canonical URL (P13-A3)
         document::Link { rel: "canonical", href: "{canonical_url}" }
-        
+
         // Open Graph Tags (P13-B)
         document::Meta { property: "og:title", content: "{full_title}" }
         document::Meta { property: "og:description", content: "{meta_description}" }
@@ -56,17 +56,17 @@ pub fn SeoHead(
         document::Meta { property: "og:type", content: "{og_type}" }
         document::Meta { property: "og:site_name", content: "{SITE.name}" }
         document::Meta { property: "og:locale", content: "en_US" }
-        
+
         // Twitter Cards (P13-C)
         document::Meta { name: "twitter:card", content: "summary_large_image" }
         document::Meta { name: "twitter:title", content: "{full_title}" }
         document::Meta { name: "twitter:description", content: "{meta_description}" }
         document::Meta { name: "twitter:image", content: "{og_image}" }
         document::Meta { name: "twitter:creator", content: "@{SITE.twitter}" }
-        
+
         // Theme Color
         document::Meta { name: "theme-color", content: "#00FFFF" }
-        
+
         // Additional SEO
         document::Meta { name: "generator", content: "Dioxus + Rust" }
     }
@@ -75,7 +75,8 @@ pub fn SeoHead(
 /// Structured Data / JSON-LD for Person (P13-D)
 #[component]
 pub fn PersonSchema() -> Element {
-    let schema = format!(r#"{{
+    let schema = format!(
+        r#"{{
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "{}",
@@ -88,8 +89,10 @@ pub fn PersonSchema() -> Element {
         ],
         "jobTitle": "Full-Stack Developer",
         "knowsAbout": ["Rust", "Web Development", "Dioxus", "WebAssembly"]
-    }}"#, SITE.author, SITE.base_url, SITE.email, SITE.github, SITE.linkedin, SITE.twitter);
-    
+    }}"#,
+        SITE.author, SITE.base_url, SITE.email, SITE.github, SITE.linkedin, SITE.twitter
+    );
+
     rsx! {
         script {
             r#type: "application/ld+json",
@@ -101,21 +104,33 @@ pub fn PersonSchema() -> Element {
 /// Breadcrumb Schema
 #[component]
 pub fn BreadcrumbSchema(items: Vec<(String, String)>) -> Element {
-    let items_json: Vec<String> = items.iter().enumerate().map(|(i, (name, url))| {
-        format!(r#"{{
+    let items_json: Vec<String> = items
+        .iter()
+        .enumerate()
+        .map(|(i, (name, url))| {
+            format!(
+                r#"{{
             "@type": "ListItem",
             "position": {},
             "name": "{}",
             "item": "{}"
-        }}"#, i + 1, name, url)
-    }).collect();
-    
-    let schema = format!(r#"{{
+        }}"#,
+                i + 1,
+                name,
+                url
+            )
+        })
+        .collect();
+
+    let schema = format!(
+        r#"{{
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [{}]
-    }}"#, items_json.join(","));
-    
+    }}"#,
+        items_json.join(",")
+    );
+
     rsx! {
         script {
             r#type: "application/ld+json",

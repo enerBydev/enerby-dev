@@ -1,8 +1,8 @@
 //! Data Tests (P16-A3, P16-A4)
 //! Tests for data models: Projects, Blog Posts, Skills
 
-use crate::components::projects::{get_projects, ProjectStatus};
-use crate::components::blog::{get_blog_posts, get_published_posts, PostStatus};
+use crate::components::blog::{PostStatus, get_blog_posts, get_published_posts};
+use crate::components::projects::{ProjectStatus, get_projects};
 use crate::components::skills::SkillCategory;
 
 // =============================================================================
@@ -18,12 +18,21 @@ fn test_projects_exist() {
 #[test]
 fn test_projects_have_required_fields() {
     let projects = get_projects();
-    
+
     for project in &projects {
         assert!(!project.id.is_empty(), "Project ID should not be empty");
-        assert!(!project.title.is_empty(), "Project title should not be empty");
-        assert!(!project.description.is_empty(), "Project description should not be empty");
-        assert!(!project.technologies.is_empty(), "Project should have technologies");
+        assert!(
+            !project.title.is_empty(),
+            "Project title should not be empty"
+        );
+        assert!(
+            !project.description.is_empty(),
+            "Project description should not be empty"
+        );
+        assert!(
+            !project.technologies.is_empty(),
+            "Project should have technologies"
+        );
     }
 }
 
@@ -34,7 +43,7 @@ fn test_projects_have_unique_ids() {
     let original_len = ids.len();
     ids.sort();
     ids.dedup();
-    
+
     assert_eq!(ids.len(), original_len, "Project IDs should be unique");
 }
 
@@ -45,8 +54,11 @@ fn test_has_featured_project() {
         .iter()
         .filter(|p| p.status == ProjectStatus::Featured)
         .count();
-    
-    assert!(featured_count >= 1, "Should have at least one featured project");
+
+    assert!(
+        featured_count >= 1,
+        "Should have at least one featured project"
+    );
 }
 
 // =============================================================================
@@ -62,7 +74,7 @@ fn test_blog_posts_exist() {
 #[test]
 fn test_blog_posts_have_required_fields() {
     let posts = get_blog_posts();
-    
+
     for post in &posts {
         assert!(!post.slug.is_empty(), "Post slug should not be empty");
         assert!(!post.title.is_empty(), "Post title should not be empty");
@@ -75,11 +87,11 @@ fn test_blog_posts_have_required_fields() {
 #[test]
 fn test_blog_posts_have_unique_slugs() {
     let posts = get_blog_posts();
-    let mut slugs: Vec<&str> = posts.iter().map(|p| p.slug).collect();
+    let mut slugs: Vec<String> = posts.iter().map(|p| p.slug.clone()).collect();
     let original_len = slugs.len();
     slugs.sort();
     slugs.dedup();
-    
+
     assert_eq!(slugs.len(), original_len, "Post slugs should be unique");
 }
 
@@ -87,12 +99,16 @@ fn test_blog_posts_have_unique_slugs() {
 fn test_published_posts_filter() {
     let all_posts = get_blog_posts();
     let published = get_published_posts();
-    
+
     // All published posts should have Published status
     for post in &published {
-        assert_eq!(post.status, PostStatus::Published, "Filtered posts should be published");
+        assert_eq!(
+            post.status,
+            PostStatus::Published,
+            "Filtered posts should be published"
+        );
     }
-    
+
     // Published count should be less than or equal to all posts
     assert!(published.len() <= all_posts.len(), "Published <= All posts");
 }
@@ -100,9 +116,13 @@ fn test_published_posts_filter() {
 #[test]
 fn test_blog_posts_have_tags() {
     let posts = get_blog_posts();
-    
+
     for post in &posts {
-        assert!(!post.tags.is_empty(), "Post '{}' should have at least one tag", post.title);
+        assert!(
+            !post.tags.is_empty(),
+            "Post '{}' should have at least one tag",
+            post.title
+        );
     }
 }
 

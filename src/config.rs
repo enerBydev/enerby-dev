@@ -36,11 +36,31 @@ pub struct NavLink {
 
 /// Main navigation items
 pub const NAV_LINKS: &[NavLink] = &[
-    NavLink { label: "Home", href: "/", is_external: false },
-    NavLink { label: "About", href: "/about", is_external: false },
-    NavLink { label: "Projects", href: "/projects", is_external: false },
-    NavLink { label: "Blog", href: "/blog", is_external: false },
-    NavLink { label: "Contact", href: "/contact", is_external: false },
+    NavLink {
+        label: "Home",
+        href: "/",
+        is_external: false,
+    },
+    NavLink {
+        label: "About",
+        href: "/about",
+        is_external: false,
+    },
+    NavLink {
+        label: "Projects",
+        href: "/projects",
+        is_external: false,
+    },
+    NavLink {
+        label: "Blog",
+        href: "/blog",
+        is_external: false,
+    },
+    NavLink {
+        label: "Contact",
+        href: "/contact",
+        is_external: false,
+    },
 ];
 
 /// Social links for footer/hero
@@ -51,7 +71,19 @@ pub struct SocialLink {
 }
 
 pub const SOCIAL_LINKS: &[SocialLink] = &[
-    SocialLink { name: "GitHub", url: "https://github.com/enerBydev", icon: "github" },
-    SocialLink { name: "LinkedIn", url: "https://linkedin.com/in/enerbydev", icon: "linkedin" },
-    SocialLink { name: "Twitter", url: "https://twitter.com/enerbydev", icon: "twitter" },
+    SocialLink {
+        name: "GitHub",
+        url: "https://github.com/enerBydev",
+        icon: "github",
+    },
+    SocialLink {
+        name: "LinkedIn",
+        url: "https://linkedin.com/in/enerbydev",
+        icon: "linkedin",
+    },
+    SocialLink {
+        name: "Twitter",
+        url: "https://twitter.com/enerbydev",
+        icon: "twitter",
+    },
 ];
