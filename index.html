@@ -83,20 +83,35 @@
     <div id="main"></div>
 
     <script>
-        // Ocultar loading cuando Dioxus monta
+        // Función para ocultar loading con timing correcto
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
+                // Usar doble requestAnimationFrame para asegurar que el browser haya pintado
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        // Pequeño delay adicional para asegurar CSS aplicado
+                        setTimeout(() => {
+                            loadingScreen.classList.add('hidden');
+                        }, 100);
+                    });
+                });
+            }
+        }
+
+        // MutationObserver para detectar cuando Dioxus monta contenido
         const observer = new MutationObserver(() => {
             const main = document.getElementById('main');
             if (main && main.children.length > 0) {
-                document.getElementById('loading-screen').classList.add('hidden');
                 observer.disconnect();
+                hideLoadingScreen();
             }
         });
         observer.observe(document.getElementById('main'), { childList: true, subtree: true });
 
         // Fallback 10s
         setTimeout(() => {
-            const ls = document.getElementById('loading-screen');
-            if (ls && !ls.classList.contains('hidden')) ls.classList.add('hidden');
+            hideLoadingScreen();
         }, 10000);
     </script>
 </body>
