@@ -2,8 +2,12 @@
 //! Common utilities for formatting, parsing, etc.
 
 pub mod markdown_loader;
+pub mod project_images;
 
-use pulldown_cmark::{Parser, html};
+// Re-export project_images public API
+pub use project_images::{get_project_image_url, has_real_image, ImageSource};
+
+use pulldown_cmark::{html, Parser};
 
 /// Convert markdown string to HTML
 pub fn markdown_to_html(markdown: &str) -> String {

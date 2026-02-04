@@ -40,7 +40,7 @@ pub fn HeroSection() -> Element {
                     div { class: "flex-1 text-center lg:text-left z-10",
                         // Greeting
                         p { class: "text-primary text-sm uppercase tracking-widest mb-4 animate-fade-in",
-                            "👋 Hello, I'm"
+                            "👋 Hello, I'm Rene Mendoza"
                         }
 
                         // Main Title (P6-A2)

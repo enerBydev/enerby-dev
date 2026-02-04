@@ -5,6 +5,7 @@ use crate::components::atoms::{Badge, Button, ButtonVariant};
 use crate::components::layout_components::{Container, Grid, Section};
 use crate::components::molecules::{Card, SectionTitle};
 use crate::routes::Route;
+use crate::utils::{get_project_image_url, ImageSource};
 use dioxus::prelude::*;
 
 /// Project Status (P9-A4)
@@ -44,7 +45,10 @@ pub struct Project {
     pub status: ProjectStatus,
     pub github_url: Option<&'static str>,
     pub demo_url: Option<&'static str>,
-    pub image_placeholder: &'static str,
+    /// Manual image URL override (highest priority)
+    pub image_override: Option<&'static str>,
+    /// Emoji fallback when no image available
+    pub image_fallback: &'static str,
 }
 
 /// Get all projects data - Proyectos Reales del Usuario
@@ -60,7 +64,8 @@ pub fn get_projects() -> Vec<Project> {
             status: ProjectStatus::Featured,
             github_url: Some("https://github.com/enerBydev/enerby.dev"),
             demo_url: Some("https://enerby.dev"),
-            image_placeholder: "🦀",
+            image_override: None,
+            image_fallback: "🦀",
         },
         Project {
             id: "rust-projects",
@@ -71,7 +76,8 @@ pub fn get_projects() -> Vec<Project> {
             status: ProjectStatus::Featured,
             github_url: Some("https://github.com/enerBydev/rust_projects"),
             demo_url: None,
-            image_placeholder: "⚙️",
+            image_override: None,
+            image_fallback: "⚙️",
         },
         // Featured External Projects (Placeholders)
         Project {
@@ -83,7 +89,8 @@ pub fn get_projects() -> Vec<Project> {
             status: ProjectStatus::Featured,
             github_url: None,
             demo_url: Some("https://youtube.com"),
-            image_placeholder: "🚀",
+            image_override: None,
+            image_fallback: "🚀",
         },
         Project {
             id: "onlycar-platform",
@@ -94,7 +101,8 @@ pub fn get_projects() -> Vec<Project> {
             status: ProjectStatus::Featured,
             github_url: None,
             demo_url: Some("https://facebook.com"),
-            image_placeholder: "🚗",
+            image_override: None,
+            image_fallback: "🚗",
         },
         // Active Projects
         Project {
@@ -106,7 +114,8 @@ pub fn get_projects() -> Vec<Project> {
             status: ProjectStatus::Active,
             github_url: Some("https://github.com/enerBydev/dioxus-components"),
             demo_url: None,
-            image_placeholder: "🎨",
+            image_override: None,
+            image_fallback: "🎨",
         },
         Project {
             id: "api-gateway",
@@ -117,7 +126,8 @@ pub fn get_projects() -> Vec<Project> {
             status: ProjectStatus::Active,
             github_url: Some("https://github.com/enerBydev/api-gateway"),
             demo_url: Some("https://google.com"),
-            image_placeholder: "🔐",
+            image_override: None,
+            image_fallback: "🔐",
         },
     ]
 }
@@ -190,13 +200,34 @@ pub fn ProjectCard(project: Project, #[props(default = false)] featured: bool) -
         "h-full".to_string()
     };
 
+    // Get the best available image source for this project
+    let image_source = get_project_image_url(&project);
+    let fallback_emoji = project.image_fallback.to_string();
+
     rsx! {
         Card { hover_effect: true, class: card_class,
             div { class: if featured { "lg:flex gap-8" } else { "" },
-                // Image placeholder
+                // Project Image - dynamic loading with fallback
                 div { class: if featured { "lg:w-1/3 mb-4 lg:mb-0" } else { "mb-4" },
-                    div { class: "aspect-video bg-gradient-to-br from-primary/20 via-bg-element to-secondary-purple/20 rounded-lg flex items-center justify-center border border-white/5",
-                        span { class: "text-4xl font-display font-bold text-white/60", "{project.image_placeholder}" }
+                    div { class: "aspect-video bg-gradient-to-br from-primary/20 via-bg-element to-secondary-purple/20 rounded-lg flex items-center justify-center border border-white/5 overflow-hidden relative",
+                        match &image_source {
+                            ImageSource::Fallback(emoji) => rsx! {
+                                span { class: "text-4xl font-display font-bold text-white/60", "{emoji}" }
+                            },
+                            _ => rsx! {
+                                // Fallback emoji shown behind image (visible if image fails to load)
+                                span {
+                                    class: "absolute inset-0 flex items-center justify-center text-4xl font-display font-bold text-white/60",
+                                    "{fallback_emoji}"
+                                }
+                                img {
+                                    src: "{image_source}",
+                                    alt: "{project.title}",
+                                    class: "relative w-full h-full object-cover",
+                                    loading: "lazy",
+                                }
+                            }
+                        }
                     }
                 }
 

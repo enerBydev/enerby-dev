@@ -1,9 +1,13 @@
 ---
 slug: nuxt3-supabase-cloudflare
 title: "Stack Moderno: Nuxt 3 + Supabase + Cloudflare"
-date: "2024-01-15"
-excerpt: "Configurando un stack fullstack moderno con Nuxt 3, Supabase para auth/database y Cloudflare Pages para deployment edge."
-tags: ["Nuxt 3", "Vue.js", "Supabase", "Cloudflare"]
+date: 2026-02-04
+excerpt: Configurando un stack fullstack moderno con Nuxt 3, Supabase para auth/database y Cloudflare Pages para deployment edge.
+tags:
+  - Nuxt 3
+  - Vue.js
+  - Supabase
+  - Cloudflare
 featured: false
 read_time: 10
 ---

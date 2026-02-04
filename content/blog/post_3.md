@@ -1,9 +1,13 @@
 ---
 slug: hexagonal-architecture-rust
 title: "Arquitectura Hexagonal en Rust: Guía Práctica"
-date: "2024-01-20"
-excerpt: "Cómo implementar Clean Architecture con Domain-Driven Design en proyectos Rust. Ports, Adapters y Repository Pattern explicados."
-tags: ["Rust", "Architecture", "DDD", "Clean Code"]
+date: 2026-02-04
+excerpt: Cómo implementar Clean Architecture con Domain-Driven Design en proyectos Rust. Ports, Adapters y Repository Pattern explicados.
+tags:
+  - Rust
+  - Architecture
+  - DDD
+  - Clean Code
 featured: true
 read_time: 15
 ---
