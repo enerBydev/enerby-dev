@@ -134,6 +134,7 @@ pub fn ProjectsSection() -> Element {
     let featured: Vec<_> = projects
         .iter()
         .filter(|p| p.status == ProjectStatus::Featured)
+        .take(3)
         .cloned()
         .collect();
     let active: Vec<_> = projects
