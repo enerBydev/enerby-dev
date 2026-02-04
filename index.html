@@ -10,9 +10,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
 
-    <!-- Critical CSS - ONLY for loading screen, no global resets -->
+    <!-- Critical CSS - Loading screen + FOUC prevention -->
     <style>
-        /* Loading Screen - isolated styles that don't affect the app */
+        /* CRITICAL: Hide app content until CSS loads - prevents FOUC */
+        #main {
+            visibility: hidden;
+        }
+
+        /* Loading Screen - isolated styles */
         #loading-screen {
             position: fixed;
             top: 0;
@@ -79,27 +84,64 @@
         <div class="loading-text">LOADING...</div>
     </div>
 
-    <!-- Dioxus monta aquí -->
+    <!-- Dioxus monta aquí - HIDDEN by default to prevent FOUC -->
     <div id="main"></div>
 
     <script>
-        // Función para ocultar loading con timing correcto
-        function hideLoadingScreen() {
+        // Wait for all stylesheets to be loaded and parsed
+        function waitForStylesheets() {
+            return new Promise((resolve) => {
+                const checkStylesheets = () => {
+                    const stylesheets = document.querySelectorAll('link[rel="stylesheet"]');
+                    let allLoaded = true;
+
+                    stylesheets.forEach(link => {
+                        // Check if stylesheet is loaded (has sheet property)
+                        if (!link.sheet) {
+                            allLoaded = false;
+                        }
+                    });
+
+                    if (allLoaded && stylesheets.length > 0) {
+                        resolve();
+                    } else {
+                        // Check again in 50ms
+                        setTimeout(checkStylesheets, 50);
+                    }
+                };
+
+                checkStylesheets();
+
+                // Fallback timeout (3s max wait)
+                setTimeout(resolve, 3000);
+            });
+        }
+
+        // Function to hide loading and show app with proper synchronization
+        async function hideLoadingScreen() {
             const loadingScreen = document.getElementById('loading-screen');
+            const main = document.getElementById('main');
+
             if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
-                // Usar doble requestAnimationFrame para asegurar que el browser haya pintado
+                // Wait for stylesheets to be ready
+                await waitForStylesheets();
+
+                // Double requestAnimationFrame for browser paint sync
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
-                        // Pequeño delay adicional para asegurar CSS aplicado
+                        // Small delay to ensure CSS is fully applied
                         setTimeout(() => {
+                            // Show main content FIRST
+                            if (main) main.style.visibility = 'visible';
+                            // THEN hide loading screen
                             loadingScreen.classList.add('hidden');
-                        }, 100);
+                        }, 150);
                     });
                 });
             }
         }
 
-        // MutationObserver para detectar cuando Dioxus monta contenido
+        // MutationObserver to detect when Dioxus mounts content
         const observer = new MutationObserver(() => {
             const main = document.getElementById('main');
             if (main && main.children.length > 0) {
