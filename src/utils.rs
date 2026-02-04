@@ -17,6 +17,11 @@ pub fn format_date(date_str: &str) -> String {
     date_str.to_string()
 }
 
+/// Calculate reading time from content (alias for calculate_reading_time)
+pub fn calculate_read_time(content: &str) -> u32 {
+    calculate_reading_time(content)
+}
+
 /// Calculate reading time from content
 pub fn calculate_reading_time(content: &str) -> u32 {
     let words = content.split_whitespace().count();
@@ -44,6 +49,16 @@ pub fn truncate(text: &str, max_len: usize) -> String {
     } else {
         format!("{}...", &text[..max_len.saturating_sub(3)])
     }
+}
+
+/// Truncate string (alias for truncate)
+pub fn truncate_string(text: &str, max_len: usize) -> String {
+    truncate(text, max_len)
+}
+
+/// Check if link is external (starts with http/https)
+pub fn is_external_link(url: &str) -> bool {
+    url.starts_with("http://") || url.starts_with("https://")
 }
 
 #[cfg(test)]
@@ -74,5 +89,11 @@ mod tests {
         let html = markdown_to_html(md);
         assert!(html.contains("<h1>Hello</h1>"));
         assert!(html.contains("<strong>bold</strong>"));
+    }
+    
+    #[test]
+    fn test_is_external_link() {
+        assert!(is_external_link("https://example.com"));
+        assert!(!is_external_link("/about"));
     }
 }

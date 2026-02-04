@@ -13,6 +13,9 @@ mod pages;
 mod layouts;
 mod components;
 
+#[cfg(test)]
+mod tests;
+
 // Re-exports
 use routes::Route;
 

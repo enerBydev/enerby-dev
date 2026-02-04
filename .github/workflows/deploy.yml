@@ -60,6 +60,14 @@ jobs:
       - name: Build Release
         run: dx build --release
 
+      # FIXED: Correct output path for Dioxus 0.7
+      # dx build outputs to: target/dx/{app_name}/release/web/public
+      - name: Prepare Artifacts
+        run: |
+          mkdir -p dist
+          cp -r target/dx/enerby_dev/release/web/public/* dist/
+          ls -la dist/
+
       # Upload build artifacts
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4

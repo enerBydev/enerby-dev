@@ -9,6 +9,7 @@ use crate::components::layout_components::{Container, Section, Grid};
 
 /// Post Status (P10-A4)
 #[derive(Clone, PartialEq, Copy)]
+#[derive(Debug)]
 pub enum PostStatus {
     Published,
     Draft,

@@ -6,6 +6,7 @@ use crate::routes::Route;
 
 /// Button Variants
 #[derive(PartialEq, Clone, Copy)]
+#[derive(Debug)]
 pub enum ButtonVariant {
     Primary,
     Secondary,

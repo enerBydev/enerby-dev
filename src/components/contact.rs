@@ -8,6 +8,7 @@ use crate::components::layout_components::{Container, Section, Grid};
 
 /// Form State (P11-C)
 #[derive(Clone, PartialEq)]
+#[derive(Debug)]
 pub enum FormState {
     Idle,
     Loading,
