@@ -28,7 +28,9 @@ fn app() -> Element {
 }
 ```
 
-Aunque en mi opinion personal es mas parecido a NuxtJS que a React por muchas razones y por eso se me es facil , razonar comprender y encontrar coherencia y logica
+Aunque en mi opinion personal es mas parecido a NuxtJS que a React por muchas razones y por eso se me es facil , razonar comprender y encontrar coherencia y logica, yo le veo mas parecido al Nuxt+Nitro en Vue/unJS y añadiendo Capacitor es para mi es mas parecido al Nuxt pero en Rust en muchas cosas en muchas situaciones..
+
+
 ### Arquitectura
 
 El proyecto sigue una estructura limpia:
