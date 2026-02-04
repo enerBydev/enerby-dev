@@ -1,5 +1,5 @@
-// enerby.dev - Pages Module
-// Page components for routing
+//! Pages Module - All page components
+//! Each page is a separate submodule
 
 pub mod home;
 pub mod about;

@@ -1,46 +1,674 @@
-/* App-wide styling */
+/* ============================================
+   enerby.dev - Cyberpunk Design System CSS
+   ============================================
+   Estética: Cyberpunk / Neon / 80s-90s Retro-Futurista
+   Inspiración: F&F Tokyo Drift, NFS:MW, Cyberpunk 2077
+   ============================================ */
+
+/* ============================================
+   CSS Custom Properties (Variables)
+   ============================================ */
+:root {
+  /* === Primary Colors - Cyan Neon === */
+  --color-primary: #00FFFF;
+  --color-primary-dark: #00CCCC;
+  --color-primary-light: #66FFFF;
+  --color-primary-glow: rgba(0, 255, 255, 0.5);
+  
+  /* === Secondary Colors - Accent Neon === */
+  --color-secondary-pink: #FF00FF;
+  --color-secondary-purple: #9D00FF;
+  --color-secondary-orange: #FF6600;
+  
+  /* === Background Colors - Dark Mode === */
+  --color-bg-primary: #0A0A0F;
+  --color-bg-secondary: #12121A;
+  --color-bg-tertiary: #1A1A25;
+  --color-bg-card: rgba(20, 20, 30, 0.7);
+  --color-bg-elevated: #1E1E2E;
+  
+  /* === Text Colors === */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B0B0C0;
+  --color-text-muted: #6B6B7B;
+  
+  /* === Status Colors === */
+  --color-success: #00FF88;
+  --color-warning: #FFB800;
+  --color-error: #FF3366;
+  
+  /* === Typography === */
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  /* === Font Sizes === */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 2rem;       /* 32px */
+  --text-4xl: 2.5rem;     /* 40px */
+  --text-5xl: 3rem;       /* 48px */
+  --text-6xl: 4rem;       /* 64px */
+  
+  /* === Spacing (4px base) === */
+  --space-1: 0.25rem;     /* 4px */
+  --space-2: 0.5rem;      /* 8px */
+  --space-3: 0.75rem;     /* 12px */
+  --space-4: 1rem;        /* 16px */
+  --space-5: 1.25rem;     /* 20px */
+  --space-6: 1.5rem;      /* 24px */
+  --space-8: 2rem;        /* 32px */
+  --space-10: 2.5rem;     /* 40px */
+  --space-12: 3rem;       /* 48px */
+  --space-16: 4rem;       /* 64px */
+  --space-20: 5rem;       /* 80px */
+  --space-24: 6rem;       /* 96px */
+  
+  /* === Border Radius === */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  
+  /* === Animation Durations === */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 700ms;
+  
+  /* === Animation Easings === */
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* === Shadows === */
+  --shadow-glow-sm: 0 0 10px var(--color-primary-glow);
+  --shadow-glow-md: 0 0 20px var(--color-primary-glow);
+  --shadow-glow-lg: 0 0 30px var(--color-primary-glow), 0 0 60px rgba(0, 255, 255, 0.3);
+  --shadow-neon: 0 0 10px #00FFFF40, inset 0 0 10px #00FFFF20;
+  
+  /* === Container === */
+  --container-max: 1280px;
+  --container-narrow: 768px;
+  --container-wide: 1536px;
+}
+
+/* ============================================
+   Font Imports
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ============================================
+   CSS Reset & Base Styles
+   ============================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-    background-color: #0f1116;
-    color: #ffffff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 20px;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-#hero {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+/* ============================================
+   Typography Styles
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  letter-spacing: 0.02em;
 }
 
-#links {
-    width: 400px;
-    text-align: left;
-    font-size: x-large;
-    color: white;
-    display: flex;
-    flex-direction: column;
+h1 {
+  font-size: var(--text-5xl);
+  text-shadow: 0 0 20px var(--color-primary-glow);
 }
 
-#links a {
-    color: white;
-    text-decoration: none;
-    margin-top: 20px;
-    margin: 10px 0px;
-    border: white 1px solid;
-    border-radius: 5px;
-    padding: 10px;
+h2 {
+  font-size: var(--text-4xl);
 }
 
-#links a:hover {
-    background-color: #1f1f1f;
-    cursor: pointer;
+h3 {
+  font-size: var(--text-3xl);
 }
 
-#header {
-    max-width: 1200px;
+h4 {
+  font-size: var(--text-2xl);
 }
 
+p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
 
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out),
+              text-shadow var(--duration-fast) var(--ease-out);
+}
 
+a:hover {
+  color: var(--color-primary-light);
+  text-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+}
+
+code {
+  padding: 0.2em 0.4em;
+  font-size: 0.9em;
+  color: var(--color-primary);
+}
+
+pre {
+  padding: var(--space-4);
+  overflow-x: auto;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--space-8);
+  }
+}
+
+.container-narrow {
+  max-width: var(--container-narrow);
+}
+
+.container-wide {
+  max-width: var(--container-wide);
+}
+
+/* Text Colors */
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-error { color: var(--color-error); }
+
+/* Font Families */
+.font-display { font-family: var(--font-display); }
+.font-body { font-family: var(--font-body); }
+.font-mono { font-family: var(--font-mono); }
+
+/* ============================================
+   Cyberpunk Keyframe Animations
+   ============================================ */
+
+/* Glitch Effect */
+@keyframes glitch {
+  0%, 90%, 100% { 
+    transform: translate(0); 
+    filter: none; 
+  }
+  92% { 
+    transform: translate(-2px, 1px); 
+    filter: hue-rotate(90deg); 
+  }
+  94% { 
+    transform: translate(2px, -1px); 
+    filter: hue-rotate(-90deg); 
+  }
+  96% { 
+    transform: translate(-1px, 2px); 
+  }
+  98% { 
+    transform: translate(1px, -2px); 
+    filter: saturate(2); 
+  }
+}
+
+/* Neon Glow Pulse */
+@keyframes glow-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 10px #00FFFF40, 0 0 20px #00FFFF20;
+  }
+  50% { 
+    box-shadow: 0 0 20px #00FFFF60, 0 0 40px #00FFFF40, 0 0 60px #00FFFF20;
+  }
+}
+
+/* Text Glow Pulse */
+@keyframes text-glow-pulse {
+  0%, 100% {
+    text-shadow: 0 0 10px var(--color-primary-glow);
+  }
+  50% {
+    text-shadow: 0 0 20px var(--color-primary-glow), 0 0 40px var(--color-primary-glow);
+  }
+}
+
+/* Typing Effect */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  0%, 50% { border-color: var(--color-primary); }
+  51%, 100% { border-color: transparent; }
+}
+
+/* Scanlines Animation */
+@keyframes scanlines {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+/* Fade In Up */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* RGB Split (Chromatic Aberration) */
+@keyframes rgb-split {
+  0%, 100% { text-shadow: none; }
+  25% { text-shadow: -2px 0 #FF00FF, 2px 0 #00FFFF; }
+  50% { text-shadow: 2px 0 #FF00FF, -2px 0 #00FFFF; }
+  75% { text-shadow: -1px 0 #FF00FF, 1px 0 #00FFFF; }
+}
+
+/* Flicker (Neon Signs) */
+@keyframes flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 1;
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.4;
+  }
+}
+
+/* Slide In Left */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide In Right */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Float Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ============================================
+   Animation Utility Classes
+   ============================================ */
+.animate-glitch {
+  animation: glitch 3s infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.animate-text-glow {
+  animation: text-glow-pulse 2s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up var(--duration-slow) var(--ease-out) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-flicker {
+  animation: flicker 5s linear infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ============================================
+   Cyberpunk Visual Effects
+   ============================================ */
+
+/* Glass Effect (Glassmorphism) */
+.glass {
+  background: var(--color-bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+}
+
+/* Neon Border */
+.neon-border {
+  border: 2px solid var(--color-primary);
+  box-shadow: var(--shadow-neon);
+}
+
+/* Neon Glow */
+.neon-glow {
+  box-shadow: var(--shadow-glow-md);
+}
+
+/* Neon Text */
+.neon-text {
+  color: var(--color-primary);
+  text-shadow: 
+    0 0 10px var(--color-primary),
+    0 0 20px var(--color-primary),
+    0 0 30px var(--color-primary);
+}
+
+/* Scanlines Overlay */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Noise/Grain Texture */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Cyberpunk Grid Background */
+.cyber-grid {
+  background-image: 
+    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* ============================================
+   Component Base Styles
+   ============================================ */
+
+/* Button Base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+/* Primary Button */
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-bg-primary);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-light);
+  box-shadow: var(--shadow-glow-md);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Ghost Button */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-ghost:hover {
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: var(--shadow-glow-sm);
+}
+
+/* Card Base */
+.card {
+  background: var(--color-bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.card:hover {
+  border-color: rgba(0, 255, 255, 0.4);
+  box-shadow: var(--shadow-glow-sm);
+  transform: translateY(-4px);
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-full);
+  background: rgba(0, 255, 255, 0.1);
+  color: var(--color-primary);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.badge-pink {
+  background: rgba(255, 0, 255, 0.1);
+  color: var(--color-secondary-pink);
+  border-color: rgba(255, 0, 255, 0.3);
+}
+
+.badge-purple {
+  background: rgba(157, 0, 255, 0.1);
+  color: var(--color-secondary-purple);
+  border-color: rgba(157, 0, 255, 0.3);
+}
+
+/* Section */
+.section {
+  padding: var(--space-16) 0;
+  position: relative;
+}
+
+/* Section Title */
+.section-title {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-8);
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), transparent);
+}
+
+/* Input Base */
+.input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background: var(--color-bg-secondary);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow-sm);
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ============================================
+   Responsive Breakpoints Reference
+   sm: 640px (Mobile landscape)
+   md: 768px (Tablet portrait)
+   lg: 1024px (Tablet landscape / Small desktop)
+   xl: 1280px (Desktop)
+   2xl: 1536px (Large desktop)
+   ============================================ */
+
+/* Mobile First Responsive */
+@media (max-width: 639px) {
+  h1 {
+    font-size: var(--text-3xl);
+  }
+  
+  h2 {
+    font-size: var(--text-2xl);
+  }
+  
+  .section {
+    padding: var(--space-10) 0;
+  }
+  
+  .section-title {
+    font-size: var(--text-2xl);
+  }
+}
+
+/* ============================================
+   Scrollbar Styling (Webkit)
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-light);
+}
+
+/* ============================================
+   Selection Styling
+   ============================================ */
+::selection {
+  background: var(--color-primary);
+  color: var(--color-bg-primary);
+}
+
+::-moz-selection {
+  background: var(--color-primary);
+  color: var(--color-bg-primary);
+}

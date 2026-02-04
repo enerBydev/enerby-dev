@@ -2,23 +2,44 @@
 name = "enerby.dev"
 default_platform = "web"
 
+# Web App Configuration
 [web.app]
 # HTML title tag content
 title = "enerby.dev | Full-Stack Developer"
+# Base path (for GitHub Pages, set to "/repo-name")
+base_path = ""
 
+# File Watcher Configuration
 [web.watcher]
 watch_path = ["src", "assets"]
 reload_html = true
+# Exclude target folder to prevent rebuild loops
+index_on_404 = true
 
+# Static Resources
 [web.resource]
 # CSS style files
 style = ["assets/main.css"]
-# JavaScript files
+# JavaScript files (none for pure Rust)
 script = []
 
+# Dev-only resources
 [web.resource.dev]
 script = []
 
-# Output directory for static files
+# Bundle Configuration
 [bundle]
 identifier = "dev.enerby.portfolio"
+publisher = "enerBydev"
+icon = ["assets/icons/icon.png"]
+resources = ["assets/*"]
+
+# Minification & Optimization (P14-A3)
+[web.build]
+# Enable minification for release builds
+minify = true
+# Output directory
+out_dir = "dist"
+
+# SSG Configuration (P14-C1)
+# Build with: dx build --release --ssg

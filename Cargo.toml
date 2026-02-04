@@ -3,9 +3,11 @@ name = "enerby_dev"
 version = "0.1.0"
 authors = ["enerBydev <rjmemdoza.s@gmail.com>"]
 edition = "2024"
-description = "enerby.dev - Portafolio personal de desarrollo de software"
+description = "enerby.dev - Personal portfolio and blog built with Dioxus and 100% Rust"
 repository = "https://github.com/enerBydev/enerby.dev"
 license = "MIT"
+keywords = ["portfolio", "dioxus", "rust", "webassembly", "wasm"]
+categories = ["web-programming"]
 
 [dependencies]
 # Dioxus Core (Web SSG)
@@ -16,6 +18,9 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 toml = "0.8"
 
+# Markdown parsing (para blog)
+pulldown-cmark = "0.13"
+
 # Utilidades
 chrono = { version = "0.4", features = ["serde"] }
 
@@ -23,9 +28,36 @@ chrono = { version = "0.4", features = ["serde"] }
 default = ["web"]
 web = []
 
-# Perfil de release optimizado para web
+# =============================================================================
+# RELEASE PROFILE - Optimized for Web (P14-A1, P14-A2)
+# =============================================================================
 [profile.release]
+# Enable Link-Time Optimization for smaller binary
 lto = true
+# Optimize for size (z = smallest, s = small, 3 = fastest)
 opt-level = "z"
+# Single codegen unit for better optimization
 codegen-units = 1
+# Abort on panic (smaller binary, no unwinding)
 panic = "abort"
+# Strip debug symbols
+strip = true
+# Enable debug info for profiling (optional, comment out for smallest size)
+# debug = false
+
+# =============================================================================
+# DEV PROFILE - Fast compilation (P14)
+# =============================================================================
+[profile.dev]
+# Faster compilation, slower runtime
+opt-level = 0
+# Enable debug symbols
+debug = true
+# Faster incremental builds
+incremental = true
+
+# =============================================================================
+# WASM-specific optimizations (applied via Dioxus build)
+# =============================================================================
+# For manual wasm-opt, run after build:
+# wasm-opt -Oz -o dist/assets/dioxus/enerby_dev_bg.wasm dist/assets/dioxus/enerby_dev_bg.wasm

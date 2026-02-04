@@ -1,5 +1,5 @@
-// enerby.dev - Layouts Module
-// Layout wrappers for pages
+//! Layouts Module
 
-pub mod base;
-pub mod blog_layout;
+pub mod root;
+pub mod header;
+pub mod footer;
