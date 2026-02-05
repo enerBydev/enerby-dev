@@ -1,47 +1,81 @@
 # enerby.dev 🚀
 
-Personal portfolio and blog built with **Dioxus** and **100% Rust**.
+> **A "Living" Portfolio built with Rust, Dioxus, and WebAssembly.**
 
-![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white)
-![WebAssembly](https://img.shields.io/badge/WebAssembly-654FF0?style=for-the-badge&logo=webassembly&logoColor=white)
+![Rust](https://img.shields.io/badge/Rust-2024-000000?style=for-the-badge&logo=rust&logoColor=white)
+![WebAssembly](https://img.shields.io/badge/WebAssembly-Strict-654FF0?style=for-the-badge&logo=webassembly&logoColor=white)
 ![Dioxus](https://img.shields.io/badge/Dioxus-0.7-blue?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
 
 ## 🎯 Overview
 
-A modern, cyberpunk-themed portfolio website showcasing my work, skills, and blog posts. Built entirely in Rust using the Dioxus framework, compiled to WebAssembly for blazing-fast performance.
+**enerby.dev** is not just a static site; it's a strongly-typed, compiled application running in your browser. It leverages the power of **WebAssembly** to deliver a native-like experience with zero JavaScript bloat.
 
-### Features
+The site features a **Cyberpunk/Neon aesthetic** with glassmorphism, organic glitch effects, and "living" elements that react to data.
 
-- ⚡ **100% Rust** - No JavaScript required
-- 🦀 **Dioxus Framework** - React-like DX with Rust performance
-- 🌐 **WebAssembly** - Near-native performance in the browser
-- 🎨 **Cyberpunk Theme** - Neon colors, glassmorphism, animations
-- 📱 **Responsive** - Mobile-first design
-- 🔍 **SEO Optimized** - Meta tags, Open Graph, Twitter Cards
-- 📝 **Blog System** - Markdown-based posts
-- 📂 **Project Showcase** - Filter by status and technologies
+### 🌟 Key Features
 
-## 🛠️ Tech Stack
+#### 🧠 **GitHub Intelligence (Static-First)**
 
-| Category | Technology |
-|----------|------------|
-| Language | Rust 2024 Edition |
-| Framework | Dioxus 0.7 |
-| Styling | Tailwind CSS |
-| Build | Cargo + dx CLI |
-| Deployment | Cloudflare Pages |
+Unlike typical static sites, this portfolio understands its own codebase:
+
+- **Auto-Enrichment**: Project cards automatically pull descriptions, topics, and "Live Demo" links from GitHub repository metadata.
+- **Dynamic Stats**: A unified tracking system (`github_stats.rs`) calculates total Lines of Code (LOC) across all maintained projects (currently **35k+ lines**).
+- **Architecture**: Implements a **"Static-First" strategy** to bypass WASM `SystemTime` limitations and CORS issues, embedding API data at build time for instant, panic-free loading.
+
+#### 📝 **Advanced Blog System**
+
+- **Markdown Engine**: Custom implementation using `pulldown-cmark` and `gray_matter`.
+- **Prose Styling**: Typography optimized for readability with syntax highlighting.
+- **Metadata**: Automatic read-time calculation and tag management.
+
+#### 🎨 **Reactive UI/UX**
+
+- **Living Counters**: Numbers tick up dynamically (e.g., LOC stats).
+- **Glitch Effects**: Subtle, non-intrusive CSS animations that trigger organically on hover.
+- **Navigation**: Client-side routing with Dioxus Router for instant page transitions.
+
+---
+
+## 🛠️ Technical Architecture
+
+This project solves unique challenges of running Rust in the browser:
+
+### The "Static-First" Pattern
+
+Running `std::time::SystemTime` or `reqwest` inside `wasm32-unknown-unknown` often leads to panics or huge binary sizes. We solved this by creating a data abstraction layer:
+
+1. **Source of Truth**: `src/utils/github_api.rs` acts as an in-memory database.
+2. **Safety**: The `github_cache` module implements a platform-agnostic TTL system that degrades gracefully in WASM.
+3. **Result**: 100% reliability with zero runtime API failures.
+
+### Project Structure
+
+```
+enerby.dev/
+├── src/
+│   ├── components/       # Atomic Design Components
+│   │   ├── atoms/        # Badges, Buttons (Pure)
+│   │   ├── molecules/    # Cards, SectionTitles
+│   │   └── ...           # Organisms (Hero, ProjectsSection)
+│   ├── utils/            # Core Logic Modules
+│   │   ├── github_api.rs # GitHub Data & Mocking
+│   │   ├── github_stats.rs # LOC & Repo Analytics
+│   │   └── markdown_loader.rs # Blog Engine
+│   ├── routes.rs         # Type-safe Router
+│   └── main.rs           # WASM Entry Point
+├── content/              # Blog Posts (Markdown)
+└── input.css             # Tailwind v4 Configuration
+```
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-```bash
-# Install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-# Install Dioxus CLI
-cargo install dioxus-cli
-```
+- **Rust** (Latest Stable)
+- **Dioxus CLI**: `cargo install dioxus-cli`
 
 ### Development
 
@@ -50,68 +84,25 @@ cargo install dioxus-cli
 git clone https://github.com/enerBydev/enerby.dev.git
 cd enerby.dev
 
-# Start development server
-dx serve --port 8080
-
-# Open http://localhost:8080
+# Run dev server (Hot Reload enabled)
+dx serve
 ```
 
 ### Production Build
 
 ```bash
-# Build for production with SSG
+# Compile to optimized WASM
 dx build --release
-
-# Or use the build script
-./scripts/build.sh
 ```
-
-## 📁 Project Structure
-
-```
-enerby.dev/
-├── src/
-│   ├── main.rs           # Entry point
-│   ├── routes.rs         # Router configuration
-│   ├── config.rs         # Site configuration
-│   ├── components/       # UI Components
-│   │   ├── atoms.rs      # Button, Badge, etc.
-│   │   ├── molecules.rs  # Card, SectionTitle, etc.
-│   │   ├── hero.rs       # Hero section
-│   │   ├── about.rs      # About section
-│   │   ├── skills.rs     # Skills section
-│   │   ├── projects.rs   # Projects section
-│   │   ├── blog.rs       # Blog section
-│   │   └── contact.rs    # Contact form
-│   ├── layout/           # Layout components
-│   └── pages/            # Page components
-├── assets/
-│   └── main.css          # Tailwind CSS
-├── Cargo.toml            # Rust dependencies
-├── Dioxus.toml           # Dioxus configuration
-└── scripts/
-    └── build.sh          # Production build script
-```
-
-## 🎨 Design System
-
-The site uses a custom cyberpunk design system with:
-
-- **Primary Color**: Cyan (`#00FFFF`)
-- **Secondary**: Purple (`#9D00FF`)
-- **Background**: Dark (`#0A0A0F`)
-- **Effects**: Glassmorphism, neon glow, glitch animations
-
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📧 Contact
-
-- **Website**: [enerby.dev](https://enerby.dev)
-- **GitHub**: [@enerBydev](https://github.com/enerBydev)
-- **Email**: rjmemdoza.s@gmail.com
 
 ---
 
-Built with ❤️ and 🦀 Rust
+## 📧 Contact
+
+- **Author**: EnerByDev
+- **GitHub**: [@enerBydev](https://github.com/enerBydev)
+- **Email**: <rjmemdoza.s@gmail.com>
+
+---
+
+_Built with ❤️, 🦀 Rust, and a lot of caffeine._
