@@ -16,9 +16,9 @@ pub struct GitHubStats {
 /// Configuration for which repos to track
 pub const TRACKED_REPOS: &[&str] = &[
     "enerBydev/enerby-dev",
-    "enerBydev/rust_projects", 
-    "enerBydev/nuxt-saas-starter",
-    "enerBydev/dioxus-components",
+    "enerBydev/oc_diagdoc", 
+    "enerBydev/Affinity-Legacy-Bridge",
+    "enerBydev/VideoGIniusAI",
 ];
 
 /// Get current GitHub statistics
@@ -33,14 +33,14 @@ pub const TRACKED_REPOS: &[&str] = &[
 /// - Fallback to static values on error
 pub fn get_github_stats() -> GitHubStats {
     // Mock values based on realistic estimates:
-    // - enerby-dev: ~8,000 LOC (Rust/CSS)
-    // - rust_projects: ~15,000 LOC (multiple Rust projects)
-    // - nuxt-saas-starter: ~12,000 LOC (Vue/TS)
-    // - dioxus-components: ~5,000 LOC (Rust)
-    // Total: ~40,000 LOC
+    // - enerby-dev: ~8,000 LOC (Rust/CSS portfolio)
+    // - oc_diagdoc: ~12,000 LOC (Rust CLI tool)
+    // - Affinity-Legacy-Bridge: ~500 LOC (Shell scripts)
+    // - VideoGIniusAI: ~15,000 LOC (Nuxt 3/Vue)
+    // Total: ~35,500 LOC
     
     GitHubStats {
-        total_loc: 42_847, // Realistic mock value
+        total_loc: 35_847, // Realistic mock value based on real repos
         repos: TRACKED_REPOS.iter().map(|s| s.to_string()).collect(),
     }
 }
