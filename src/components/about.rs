@@ -10,34 +10,36 @@ use dioxus::prelude::*;
 /// About Section - Biography and experience
 #[component]
 pub fn AboutSection() -> Element {
+    let i18n = crate::i18n::use_i18n(); // Helper hook
+
     rsx! {
         Section { id: "about", alternate: true,
             Container {
                 // Section Title (P7-A2)
                 SectionTitle {
-                    text: "About Me".to_string(),
-                    subtitle: "Who I Am".to_string()
+                    text: i18n.about.title.to_string(),
+                    subtitle: i18n.about.subtitle.to_string()
                 }
 
                 div { class: "grid lg:grid-cols-2 gap-12",
                     // Left: Bio (P7-A3)
                     div { class: "space-y-6",
                         p { class: "text-lg text-secondary leading-relaxed",
-                            "I'm a passionate software developer based in Mexico, specializing in "
-                            span { class: "text-primary font-semibold", "Rust" }
-                            " and modern web technologies. With a deep love for clean architecture, performance optimization, and cyberpunk aesthetics, I craft digital experiences that are both beautiful and blazingly fast."
+                            "{i18n.about.bio_p1_start}"
+                            span { class: "text-primary font-semibold", "{i18n.about.bio_p1_highlight}" }
+                            "{i18n.about.bio_p1_end}"
                         }
 
                         p { class: "text-muted leading-relaxed",
-                            "My journey in tech started with curiosity and evolved into a passion for building tools that make a difference. I believe in the power of open source, continuous learning, and pushing the boundaries of what's possible."
+                            "{i18n.about.bio_p2}"
                         }
 
                         // Highlights/Facts (P7-A4)
                         div { class: "grid grid-cols-2 gap-4 mt-8",
-                            HighlightCard { number: "5+", label: "Years Experience" }
+                            HighlightCard { number: "5+", label: "{i18n.about.stat_experience}" }
                             // Dynamic Living Projects counter
                             DynamicProjectsCounter {}
-                            HighlightCard { number: "10+", label: "Technologies" }
+                            HighlightCard { number: "10+", label: "{i18n.about.stat_technologies}" }
                             // Dynamic Lines of Code counter (F10)
                             DynamicLocCounter {}
                         }
@@ -47,27 +49,17 @@ pub fn AboutSection() -> Element {
                     div {
                         h3 { class: "text-xl font-bold text-white mb-6 flex items-center gap-2",
                             span { class: "text-primary", "▸" }
-                            "Experience Timeline"
+                            "{i18n.about.timeline_title}"
                         }
 
                         Timeline {
-                            TimelineItem {
-                                year: "2024 - Present".to_string(),
-                                title: "Full-Stack Developer".to_string(),
-                                company: "Freelance".to_string(),
-                                description: "Building high-performance web applications with Rust, Dioxus, and modern frontend technologies.".to_string()
-                            }
-                            TimelineItem {
-                                year: "2022 - 2024".to_string(),
-                                title: "Software Engineer".to_string(),
-                                company: "Tech Startup".to_string(),
-                                description: "Led development of real-time systems and contributed to core architecture decisions.".to_string()
-                            }
-                            TimelineItem {
-                                year: "2020 - 2022".to_string(),
-                                title: "Junior Developer".to_string(),
-                                company: "Digital Agency".to_string(),
-                                description: "Started journey with web development, learning fundamentals and best practices.".to_string()
+                            for item in i18n.about.timeline.iter() {
+                                TimelineItem {
+                                    year: item.year.to_string(),
+                                    title: item.title.to_string(),
+                                    company: item.company.to_string(),
+                                    description: item.description.to_string()
+                                }
                             }
                         }
                     }
@@ -108,7 +100,7 @@ pub fn TimelineItem(year: String, title: String, company: String, description: S
 
 /// Highlight Card for stats
 #[component]
-fn HighlightCard(number: &'static str, label: &'static str) -> Element {
+fn HighlightCard(number: String, label: String) -> Element {
     rsx! {
         Card {
             div { class: "text-center py-2",
@@ -125,6 +117,7 @@ fn HighlightCard(number: &'static str, label: &'static str) -> Element {
 fn DynamicLocCounter() -> Element {
     let stats = get_github_stats();
     let loc_formatted = format_loc(stats.total_loc);
+    let i18n = crate::i18n::use_i18n();
 
     rsx! {
         Card {
@@ -132,7 +125,7 @@ fn DynamicLocCounter() -> Element {
                 class: "text-center py-2",
                 title: "Lines of code across {stats.repos.len()} repositories",
                 p { class: "text-3xl font-bold text-primary font-display", "{loc_formatted}" }
-                p { class: "text-xs text-muted uppercase tracking-wider mt-1", "Lines of Code" }
+                p { class: "text-xs text-muted uppercase tracking-wider mt-1", "{i18n.about.stat_loc}" }
             }
         }
     }
@@ -144,6 +137,7 @@ fn DynamicLocCounter() -> Element {
 fn DynamicProjectsCounter() -> Element {
     let projects = get_projects();
     let count = projects.len();
+    let i18n = crate::i18n::use_i18n();
 
     rsx! {
         Card {
@@ -151,7 +145,7 @@ fn DynamicProjectsCounter() -> Element {
                 class: "text-center py-2",
                 title: "Active repositories on GitHub",
                 p { class: "text-3xl font-bold text-primary font-display", "{count}" }
-                p { class: "text-xs text-muted uppercase tracking-wider mt-1", "Living Projects" }
+                p { class: "text-xs text-muted uppercase tracking-wider mt-1", "{i18n.about.stat_projects}" }
             }
         }
     }

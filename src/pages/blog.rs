@@ -56,6 +56,7 @@ pub fn BlogPage() -> Element {
 #[component]
 pub fn BlogPostPage(slug: String) -> Element {
     let post = get_post_by_slug(&slug);
+    let lang = crate::i18n::I18N_CONFIG.read().language;
 
     rsx! {
         Section { id: "blog-post",
@@ -73,7 +74,7 @@ pub fn BlogPostPage(slug: String) -> Element {
                     article { class: "max-w-3xl mx-auto",
                         // Header
                         header { class: "mb-8 text-center",
-                            h1 { class: "text-3xl font-bold text-white mb-4", "{p.title}" }
+                            h1 { class: "text-3xl font-bold text-white mb-4", "{p.title(&lang)}" }
                             div { class: "flex items-center justify-center gap-4 text-muted",
                                 span { "{p.date}" }
                                 span { "•" }
@@ -90,7 +91,7 @@ pub fn BlogPostPage(slug: String) -> Element {
 
                         // Content
                         div { class: "prose prose-invert max-w-none bg-bg-card/50 rounded-xl p-8 border border-white/5",
-                            div { dangerous_inner_html: "{p.content}" }
+                            div { dangerous_inner_html: "{p.content(&lang)}" }
                         }
                     }
                 } else {

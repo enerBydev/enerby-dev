@@ -210,8 +210,10 @@ mod tests {
         Project {
             id: "test-project",
             title: "Test Project",
-            description: "Test description",
-            long_description: "Test long description",
+            description_en: "Test description",
+            description_es: "Test description",
+            long_description_en: "Test long description",
+            long_description_es: "Test long description",
             technologies: vec!["Rust"],
             status: ProjectStatus::Active,
             github_url,

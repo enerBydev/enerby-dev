@@ -12,6 +12,7 @@ mod pages;
 mod routes;
 mod theme;
 mod utils;
+mod i18n;
 
 #[cfg(test)]
 mod tests;

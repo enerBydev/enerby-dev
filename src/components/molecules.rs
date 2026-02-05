@@ -126,3 +126,35 @@ pub fn ProgressBar(
         }
     }
 }
+
+/// Language Switcher Component
+/// Toggles between available languages
+#[component]
+pub fn LanguageToggle() -> Element {
+    // Read global state directly to get current enum value
+    let i18n_state = crate::i18n::I18N_CONFIG.read();
+    let current_lang = i18n_state.language;
+
+    rsx! {
+        button {
+            class: "language-toggle flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-black/20 hover:border-primary/50 transition-all cursor-pointer group backdrop-blur-sm",
+            onclick: move |_| crate::i18n::toggle_language(),
+            title: "Switch Language / Cambiar Idioma",
+
+            // EN Segment
+            span {
+                class: if current_lang == crate::i18n::Language::EN { "text-primary font-bold font-mono text-xs shadow-glow-sm" } else { "text-muted font-mono text-xs group-hover:text-white transition-colors" },
+                "EN"
+            }
+
+            // Separator
+            span { class: "text-white/10 text-xs", "|" }
+
+            // ES Segment
+            span {
+                class: if current_lang == crate::i18n::Language::ES { "text-primary font-bold font-mono text-xs shadow-glow-sm" } else { "text-muted font-mono text-xs group-hover:text-white transition-colors" },
+                "ES"
+            }
+        }
+    }
+}

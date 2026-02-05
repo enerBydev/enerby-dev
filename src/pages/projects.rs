@@ -78,8 +78,10 @@ pub fn ProjectsPage() -> Element {
 #[component]
 pub fn ProjectDetailPage(slug: String) -> Element {
     use crate::components::projects::get_project_by_id;
+    use crate::i18n::I18N_CONFIG;
 
     let project = get_project_by_id(&slug);
+    let lang = I18N_CONFIG.read().language;
 
     rsx! {
         Section { id: "project-detail",
@@ -89,7 +91,7 @@ pub fn ProjectDetailPage(slug: String) -> Element {
                         // Header
                         div { class: "mb-8",
                             h1 { class: "text-3xl font-bold text-white mb-4", "{p.title}" }
-                            p { class: "text-muted text-lg", "{p.long_description}" }
+                            p { class: "text-muted text-lg", "{p.long_description(&lang)}" }
                         }
 
                         // Technologies

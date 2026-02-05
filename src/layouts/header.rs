@@ -8,6 +8,7 @@ use dioxus::prelude::*;
 pub fn Header() -> Element {
     // Mobile menu state
     let mut is_menu_open = use_signal(|| false);
+    let i18n = crate::i18n::use_i18n();
 
     // Get current route for active state (requires implicit router context from RootLayout)
     // In Dioxus 0.6/0.7 use_route might be explicit
@@ -65,7 +66,7 @@ pub fn Header() -> Element {
                             to: Route::HomePage {},
                             class: base_class,
                             active_class: active_class,
-                            "Home"
+                            "{i18n.nav.home}"
                         }
                     }
                     li {
@@ -73,7 +74,7 @@ pub fn Header() -> Element {
                             to: Route::AboutPage {},
                             class: base_class,
                             active_class: active_class,
-                            "About"
+                            "{i18n.nav.about}"
                         }
                     }
                     li {
@@ -81,7 +82,7 @@ pub fn Header() -> Element {
                             to: Route::ProjectsPage {},
                             class: base_class,
                             active_class: active_class,
-                            "Projects"
+                            "{i18n.nav.projects}"
                         }
                     }
                     li {
@@ -89,7 +90,7 @@ pub fn Header() -> Element {
                             to: Route::BlogPage {},
                             class: base_class,
                             active_class: active_class,
-                            "Blog"
+                            "{i18n.nav.blog}"
                         }
                     }
                     li {
@@ -97,8 +98,13 @@ pub fn Header() -> Element {
                             to: Route::ContactPage {},
                             class: base_class,
                             active_class: active_class,
-                            "Contact"
+                            "{i18n.nav.contact}"
                         }
+                    }
+
+                    // Language Switcher
+                    li {
+                        crate::components::molecules::LanguageToggle {}
                     }
 
                     // Social Icons (Desktop) - Material Design Icons
@@ -173,11 +179,12 @@ pub fn Header() -> Element {
             div {
                 class: "mobile-menu md:hidden absolute top-full left-0 w-full bg-bg-card/95 backdrop-blur-xl border-b border-primary/20 overflow-hidden transition-all duration-300 {mobile_menu_class}",
                 ul { class: "flex flex-col p-6 space-y-4 items-center",
-                    li { Link { to: Route::HomePage {}, class: "text-lg", onclick: move |_| is_menu_open.set(false), "Home" } }
-                    li { Link { to: Route::AboutPage {}, class: "text-lg", onclick: move |_| is_menu_open.set(false), "About" } }
-                    li { Link { to: Route::ProjectsPage {}, class: "text-lg", onclick: move |_| is_menu_open.set(false), "Projects" } }
-                    li { Link { to: Route::BlogPage {}, class: "text-lg", onclick: move |_| is_menu_open.set(false), "Blog" } }
-                    li { Link { to: Route::ContactPage {}, class: "text-lg", onclick: move |_| is_menu_open.set(false), "Contact" } }
+                    li { Link { to: Route::HomePage {}, class: "text-lg", onclick: move |_| is_menu_open.set(false), "{i18n.nav.home}" } }
+                    li { Link { to: Route::AboutPage {}, class: "text-lg", onclick: move |_| is_menu_open.set(false), "{i18n.nav.about}" } }
+                    li { Link { to: Route::ProjectsPage {}, class: "text-lg", onclick: move |_| is_menu_open.set(false), "{i18n.nav.projects}" } }
+                    li { Link { to: Route::BlogPage {}, class: "text-lg", onclick: move |_| is_menu_open.set(false), "{i18n.nav.blog}" } }
+                    li { Link { to: Route::ContactPage {}, class: "text-lg", onclick: move |_| is_menu_open.set(false), "{i18n.nav.contact}" } }
+                    li { class: "mt-4 scale-125", crate::components::molecules::LanguageToggle {} }
                 }
             }
         }

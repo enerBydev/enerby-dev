@@ -7,6 +7,7 @@ use crate::components::molecules::{Card, SectionTitle};
 use crate::routes::Route;
 use crate::utils::github_api::parse_github_url;
 use crate::utils::{ImageSource, get_project_image_url};
+use crate::i18n::Language;
 use dioxus::prelude::*;
 
 /// Project Status (P9-A4)
@@ -36,20 +37,41 @@ impl ProjectStatus {
 }
 
 /// Project data structure (P9-A1, P9-A2)
+/// Updated for i18n (F18-C)
 #[derive(Clone, PartialEq)]
 pub struct Project {
     pub id: &'static str,
     pub title: &'static str,
-    pub description: &'static str,
-    pub long_description: &'static str,
+    
+    // Internal fields for localization - made pub for tests/construction
+    pub description_en: &'static str,
+    pub description_es: &'static str,
+    
+    pub long_description_en: &'static str,
+    pub long_description_es: &'static str,
+    
     pub technologies: Vec<&'static str>,
     pub status: ProjectStatus,
     pub github_url: Option<&'static str>,
     pub demo_url: Option<&'static str>,
-    /// Manual image URL override (highest priority)
     pub image_override: Option<&'static str>,
-    /// Emoji fallback when no image available
     pub image_fallback: &'static str,
+}
+
+impl Project {
+    pub fn description(&self, lang: &Language) -> &'static str {
+        match lang {
+            Language::EN => self.description_en,
+            Language::ES => self.description_es,
+        }
+    }
+
+    pub fn long_description(&self, lang: &Language) -> &'static str {
+        match lang {
+            Language::EN => self.long_description_en,
+            Language::ES => self.long_description_es,
+        }
+    }
 }
 
 /// Get all projects data - Proyectos Reales del Usuario
@@ -59,8 +81,13 @@ pub fn get_projects() -> Vec<Project> {
         Project {
             id: "enerby-dev",
             title: "enerby.dev",
-            description: "Portfolio personal construido con Rust y Dioxus. Temática cyberpunk con tecnologías web modernas.",
-            long_description: "Portfolio full-featured mostrando mi trabajo, skills y blog. Construido enteramente en Rust usando Dioxus, con estética cyberpunk, colores neon, glassmorphism y animaciones suaves.",
+            
+            description_en: "Personal portfolio built with Rust and Dioxus. Cyberpunk themed with modern web technologies.",
+            description_es: "Portafolio personal construido con Rust y Dioxus. Temática cyberpunk con tecnologías web modernas.",
+            
+            long_description_en: "Full-featured portfolio showcasing my work, skills, and blog. Built entirely in Rust using Dioxus, localized with a static-first i18n approach, neon aesthetic, glassmorphism, and smooth animations.",
+            long_description_es: "Portafolio completo mostrando mi trabajo, habilidades y blog. Construido enteramente en Rust usando Dioxus, localizado con enfoque i18n estático, estética neón, glassmorphism y animaciones suaves.",
+            
             technologies: vec!["Rust", "Dioxus", "WebAssembly", "Tailwind CSS"],
             status: ProjectStatus::Featured,
             github_url: Some("https://github.com/enerBydev/enerby-dev"),
@@ -72,9 +99,14 @@ pub fn get_projects() -> Vec<Project> {
         Project {
             id: "oc-diagdoc",
             title: "oc_diagdoc",
-            description: "command-line-utilities, text-processing, development-tools",
-            long_description: "CLI avanzado para proyectos de documentación técnica extensos. Incluye verificación integral, dashboard de estadísticas en tiempo real, visualización jerárquica, análisis de dependencias y diagnóstico cuántico con auto-reparación.",
-            technologies: vec!["Rust", "CLI", "WalkDir", "Serde", "Clap"], // Keeping specific techs as they are more informative than just tags
+            
+            description_en: "Advanced CLI for technical documentation. Includes integral verification and real-time dashboard.",
+            description_es: "CLI avanzado para documentación técnica. Incluye verificación integral y dashboard en tiempo real.",
+            
+            long_description_en: "Advanced CLI tool for extensive technical documentation projects. Features integral verification, real-time stats dashboard, hierarchical visualization, dependency analysis, and quantum diagnostics with auto-repair.",
+            long_description_es: "Herramienta CLI avanzada para proyectos de documentación técnica extensos. Cuenta con verificación integral, panel de estadísticas en tiempo real, visualización jerárquica, análisis de dependencias y diagnóstico cuántico con auto-reparación.",
+            
+            technologies: vec!["Rust", "CLI", "WalkDir", "Serde", "Clap"],
             status: ProjectStatus::Featured,
             github_url: Some("https://github.com/enerBydev/oc_diagdoc"),
             demo_url: Some("https://www.google.com"),
@@ -85,8 +117,13 @@ pub fn get_projects() -> Vec<Project> {
         Project {
             id: "affinity-legacy-bridge",
             title: "Affinity Legacy Bridge",
-            description: "Bridge para ejecutar Affinity en Linux LTS usando Bottles/Flatpak. Solución para sistemas con GLIBC antiguo.",
-            long_description: "Kit de instalación que usa Bottles (Flatpak) como puente para ejecutar Affinity Photo/Designer/Publisher en sistemas Linux LTS con GLIBC 2.35. Contiene bibliotecas aisladas modernas (GLIBC 2.42+) sin romper el sistema.",
+            
+            description_en: "Bridge to run Affinity on Linux LTS using Bottles/Flatpak. Solution for systems with old GLIBC.",
+            description_es: "Puente para ejecutar Affinity en Linux LTS usando Bottles/Flatpak. Solución para sistemas con GLIBC antiguo.",
+            
+            long_description_en: "Installation kit using Bottles (Flatpak) as a bridge to run Affinity Photo/Designer/Publisher on Linux LTS systems with GLIBC 2.35. Contains isolated modern libraries (GLIBC 2.42+) without breaking the host system.",
+            long_description_es: "Kit de instalación que usa Bottles (Flatpak) como puente para ejecutar Affinity Photo/Designer/Publisher en sistemas Linux LTS con GLIBC 2.35. Contiene bibliotecas aisladas modernas (GLIBC 2.42+) sin romper el sistema.",
+            
             technologies: vec!["Shell", "Flatpak", "Bottles", "Wine", "Linux"],
             status: ProjectStatus::Featured,
             github_url: Some("https://github.com/enerBydev/Affinity-Legacy-Bridge"),
@@ -98,8 +135,13 @@ pub fn get_projects() -> Vec<Project> {
         Project {
             id: "videoginiusai",
             title: "VideoGIniusAI",
-            description: "Plataforma de edición de video potenciada por IA. Creación de contenido automatizada con Nuxt 3.",
-            long_description: "Aplicación web para generación y edición de video usando inteligencia artificial. Construida con Nuxt 3, integra modelos de IA para automatizar la creación de contenido multimedia.",
+            
+            description_en: "AI-powered video analysis and generation platform. Content automation with Nuxt 3.",
+            description_es: "Plataforma de edición de video potenciada por IA. Creación de contenido automatizada con Nuxt 3.",
+            
+            long_description_en: "Web application for video generation/edition using AI. Built with Nuxt 3, integrates AI models to automate multimedia content creation.",
+            long_description_es: "Aplicación web para generación y edición de video usando inteligencia artificial. Construida con Nuxt 3, integra modelos de IA para automatizar la creación de contenido multimedia.",
+            
             technologies: vec!["Nuxt 4", "Vue.js", "AI", "TypeScript"],
             status: ProjectStatus::Active,
             github_url: Some("https://github.com/enerBydev/VideoGIniusAI"),
@@ -120,13 +162,19 @@ pub fn get_project_by_id(id: &str) -> Option<Project> {
 // ============================================================================
 
 /// Enriched project with dynamic demo_url from GitHub
-/// This struct owns its strings for dynamic data
+/// This struct owns its strings for dynamic data and i18n support
 #[derive(Clone, PartialEq)]
 pub struct EnrichedProject {
     pub id: String,
     pub title: String,
-    pub description: String,
-    pub long_description: String,
+    
+    // Localized fields
+    pub description_en: String,
+    pub description_es: String,
+    
+    pub long_description_en: String,
+    pub long_description_es: String,
+    
     pub technologies: Vec<String>,
     pub status: ProjectStatus,
     pub github_url: Option<String>,
@@ -136,6 +184,22 @@ pub struct EnrichedProject {
     pub image_fallback: String,
     /// Source of demo_url for debugging/UI
     pub demo_url_source: DemoUrlSource,
+}
+
+impl EnrichedProject {
+    pub fn description(&self, lang: &Language) -> &str {
+        match lang {
+            Language::EN => &self.description_en,
+            Language::ES => &self.description_es,
+        }
+    }
+
+    pub fn long_description(&self, lang: &Language) -> &str {
+        match lang {
+            Language::EN => &self.long_description_en,
+            Language::ES => &self.long_description_es,
+        }
+    }
 }
 
 /// Indicates where the demo_url came from
@@ -154,19 +218,20 @@ impl From<Project> for EnrichedProject {
         Self {
             id: p.id.to_string(),
             title: p.title.to_string(),
-            description: p.description.to_string(),
-            long_description: p.long_description.to_string(),
+            
+            description_en: p.description_en.to_string(),
+            description_es: p.description_es.to_string(),
+            
+            long_description_en: p.long_description_en.to_string(),
+            long_description_es: p.long_description_es.to_string(),
+            
             technologies: p.technologies.iter().map(|t| t.to_string()).collect(),
             status: p.status,
             github_url: p.github_url.map(|s| s.to_string()),
             demo_url: p.demo_url.map(|s| s.to_string()),
             image_override: p.image_override.map(|s| s.to_string()),
             image_fallback: p.image_fallback.to_string(),
-            demo_url_source: if p.demo_url.is_some() {
-                DemoUrlSource::Manual
-            } else {
-                DemoUrlSource::None
-            },
+            demo_url_source: if p.demo_url.is_some() { DemoUrlSource::Manual } else { DemoUrlSource::None },
         }
     }
 }
@@ -211,7 +276,13 @@ pub fn enrich_project_with_github(project: Project) -> EnrichedProject {
                     println!("checking description: '{}'", desc);
                     if !desc.is_empty() {
                         println!("updating description");
-                        enriched.description = desc.clone();
+                        // GitHub descriptions are typically in English (or the repo's primary language)
+                        // We update the EN field and optionally sync ES or leave it
+                        enriched.description_en = desc.clone();
+                        // For now, if we get a better description from GitHub, we might want to use it for ES too 
+                        // if the original was empty or placeholder, but to be safe let's just update EN.
+                        // Or better: update both if we assume the GitHub desc is the "canonical" one.
+                        // Strategy: Update EN, leave ES as is (manual translation preserved).
                     }
                 }
 
@@ -303,13 +374,14 @@ pub fn ProjectsSection() -> Element {
         .filter(|p| p.status == ProjectStatus::Active)
         .cloned()
         .collect();
+    let i18n = crate::i18n::use_i18n();
 
     rsx! {
         Section { id: "projects", alternate: true,
             Container {
                 SectionTitle {
-                    text: "Projects".to_string(),
-                    subtitle: "What I've Built".to_string(),
+                    text: i18n.projects.title.to_string(),
+                    subtitle: i18n.projects.subtitle.to_string(),
                     center: true
                 }
 
@@ -334,7 +406,7 @@ pub fn ProjectsSection() -> Element {
                     Button {
                         variant: ButtonVariant::Ghost,
                         to: Route::ProjectsPage {},
-                        "View All Projects →"
+                        "{i18n.projects.view_all}"
                     }
                 }
             }
@@ -342,9 +414,13 @@ pub fn ProjectsSection() -> Element {
     }
 }
 
+use crate::i18n::I18N_CONFIG;
+
 /// Project Card (P9-C2)
 #[component]
 pub fn ProjectCard(project: Project, #[props(default = false)] featured: bool) -> Element {
+    let lang = I18N_CONFIG.read().language;
+    let i18n = crate::i18n::use_i18n();
     let card_class = if featured {
         "mb-8".to_string()
     } else {
@@ -396,7 +472,7 @@ pub fn ProjectCard(project: Project, #[props(default = false)] featured: bool) -
 
                     // Description
                     p { class: "text-muted text-sm mb-4 line-clamp-2",
-                        "{project.description}"
+                        "{project.description(&lang)}"
                     }
 
                     // Technologies
@@ -413,7 +489,7 @@ pub fn ProjectCard(project: Project, #[props(default = false)] featured: bool) -
                                 variant: ButtonVariant::Ghost,
                                 href: Some(github.to_string()),
                                 new_tab: true,
-                                "GitHub"
+                                "{i18n.projects.btn_github}"
                             }
                         }
                         if let Some(demo) = project.demo_url {
@@ -421,7 +497,7 @@ pub fn ProjectCard(project: Project, #[props(default = false)] featured: bool) -
                                 variant: ButtonVariant::Neon,
                                 href: Some(demo.to_string()),
                                 new_tab: true,
-                                "Live Demo"
+                                "{i18n.projects.btn_demo}"
                             }
                         }
                     }
@@ -445,6 +521,8 @@ pub fn EnrichedProjectCard(
     project: EnrichedProject,
     #[props(default = false)] featured: bool,
 ) -> Element {
+    let lang = I18N_CONFIG.read().language;
+    let i18n = crate::i18n::use_i18n();
     let card_class = if featured {
         "mb-8".to_string()
     } else {
@@ -455,8 +533,13 @@ pub fn EnrichedProjectCard(
     let temp_project = Project {
         id: Box::leak(project.id.clone().into_boxed_str()),
         title: Box::leak(project.title.clone().into_boxed_str()),
-        description: Box::leak(project.description.clone().into_boxed_str()),
-        long_description: Box::leak(project.long_description.clone().into_boxed_str()),
+        
+        description_en: Box::leak(project.description_en.clone().into_boxed_str()),
+        description_es: Box::leak(project.description_es.clone().into_boxed_str()),
+        
+        long_description_en: Box::leak(project.long_description_en.clone().into_boxed_str()),
+        long_description_es: Box::leak(project.long_description_es.clone().into_boxed_str()),
+        
         technologies: project
             .technologies
             .iter()
@@ -465,27 +548,28 @@ pub fn EnrichedProjectCard(
         status: project.status,
         github_url: project
             .github_url
-            .as_ref()
-            .map(|s| -> &'static str { Box::leak(s.clone().into_boxed_str()) }),
+            .clone()
+            .map(|s| -> &'static str { Box::leak(s.into_boxed_str()) }),
         demo_url: project
             .demo_url
-            .as_ref()
-            .map(|s| -> &'static str { Box::leak(s.clone().into_boxed_str()) }),
+            .clone()
+            .map(|s| -> &'static str { Box::leak(s.into_boxed_str()) }),
         image_override: project
             .image_override
-            .as_ref()
-            .map(|s| -> &'static str { Box::leak(s.clone().into_boxed_str()) }),
+            .clone()
+            .map(|s| -> &'static str { Box::leak(s.into_boxed_str()) }),
         image_fallback: Box::leak(project.image_fallback.clone().into_boxed_str()),
     };
 
     let image_source = get_project_image_url(&temp_project);
-    let fallback_emoji = project.image_fallback.clone();
+    let fallback_emoji = project.image_fallback.to_string();
 
     // Demo URL button label and tooltip based on source
-    let (demo_label, demo_tooltip) = match project.demo_url_source {
-        DemoUrlSource::GitHub => ("Live Demo 🔗", Some("Auto-detected from GitHub repository")),
-        DemoUrlSource::Manual => ("Live Demo", None),
-        DemoUrlSource::None => ("", None),
+    // Demo URL button label and tooltip based on source
+    let (demo_label, demo_tooltip): (String, Option<&'static str>) = match project.demo_url_source {
+        DemoUrlSource::GitHub => (format!("{} 🔗", i18n.projects.btn_demo), Some(i18n.projects.tooltip_auto)),
+        DemoUrlSource::Manual => (i18n.projects.btn_demo.to_string(), None),
+        DemoUrlSource::None => ("".to_string(), None),
     };
 
     rsx! {
@@ -512,6 +596,15 @@ pub fn EnrichedProjectCard(
                                 }
                             }
                         }
+                        // Demo Source Indicator
+                        if project.demo_url_source == DemoUrlSource::GitHub {
+                            div {
+                                class: "absolute top-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded flex items-center gap-1 border border-white/10 shadow-lg",
+                                title: "{i18n.projects.tooltip_auto}",
+                                span { "🔍" }
+                                "{i18n.projects.btn_demo_github}"
+                            }
+                        }
                     }
                 }
 
@@ -524,8 +617,8 @@ pub fn EnrichedProjectCard(
                         if project.demo_url_source == DemoUrlSource::GitHub {
                             span {
                                 class: "text-xs px-2 py-0.5 bg-green-500/20 text-green-400 rounded-full flex items-center gap-1",
-                                title: "Demo URL auto-detected from GitHub",
-                                "🔗 Auto"
+                                title: "{i18n.projects.tooltip_auto}",
+                                "🔗 {i18n.projects.badge_auto}"
                             }
                         }
                     }
@@ -537,7 +630,7 @@ pub fn EnrichedProjectCard(
 
                     // Description
                     p { class: "text-muted text-sm mb-4 line-clamp-2",
-                        "{project.description}"
+                        "{project.description(&lang)}"
                     }
 
                     // Technologies
@@ -554,13 +647,13 @@ pub fn EnrichedProjectCard(
                                 variant: ButtonVariant::Ghost,
                                 href: Some(github.clone()),
                                 new_tab: true,
-                                "GitHub"
+                                "{i18n.projects.btn_github}"
                             }
                         }
                         if let Some(demo) = &project.demo_url {
                             div {
                                 class: "relative group/demo",
-                                title: demo_tooltip.unwrap_or(""),
+                                title: demo_tooltip.map(|s| s.to_string()).unwrap_or("".to_string()),
                                 Button {
                                     variant: ButtonVariant::Neon,
                                     href: Some(demo.clone()),
@@ -593,20 +686,21 @@ pub fn EnrichedProjectsSection() -> Element {
         .filter(|p| p.status == ProjectStatus::Active)
         .cloned()
         .collect();
+    let i18n = crate::i18n::use_i18n();
 
     rsx! {
         Section { id: "projects", alternate: true,
             Container {
                 SectionTitle {
-                    text: "Projects".to_string(),
-                    subtitle: "What I've Built".to_string(),
+                    text: i18n.projects.title.to_string(),
+                    subtitle: i18n.projects.subtitle.to_string(),
                     center: true
                 }
 
                 // Featured Projects
                 if !featured.is_empty() {
                     div { class: "mb-12",
-                        h3 { class: "text-lg font-semibold text-primary mb-6", "⭐ Featured" }
+                        h3 { class: "text-lg font-semibold text-primary mb-6", "{i18n.projects.section_featured}" }
                         div { class: "space-y-6",
                             for project in featured {
                                 EnrichedProjectCard { project: project.clone(), featured: true }
@@ -618,7 +712,7 @@ pub fn EnrichedProjectsSection() -> Element {
                 // Active Projects Grid
                 if !active.is_empty() {
                     div {
-                        h3 { class: "text-lg font-semibold text-secondary mb-6", "🚀 In Progress" }
+                        h3 { class: "text-lg font-semibold text-secondary mb-6", "{i18n.projects.section_active}" }
                         Grid { cols: 2, gap: 6,
                             for project in active {
                                 EnrichedProjectCard { project: project.clone() }
@@ -630,7 +724,7 @@ pub fn EnrichedProjectsSection() -> Element {
                 // View all projects link
                 div { class: "mt-8 text-center",
                     Link { to: Route::ProjectsPage {},
-                        Button { variant: ButtonVariant::Secondary, "View All Projects →" }
+                        Button { variant: ButtonVariant::Secondary, "{i18n.projects.view_all}" }
                     }
                 }
             }
@@ -651,8 +745,10 @@ mod tests {
         let project = Project {
             id: "test",
             title: "Test Project",
-            description: "A test",
-            long_description: "A longer test",
+            description_en: "A test",
+            description_es: "A test",
+            long_description_en: "A longer test",
+            long_description_es: "A longer test",
             technologies: vec!["Rust"],
             status: ProjectStatus::Active,
             github_url: Some("https://github.com/owner/repo"),
@@ -674,8 +770,10 @@ mod tests {
         let project = Project {
             id: "test",
             title: "Test",
-            description: "Test",
-            long_description: "Test",
+            description_en: "Test",
+            description_es: "Test",
+            long_description_en: "Test",
+            long_description_es: "Test",
             technologies: vec![],
             status: ProjectStatus::Active,
             github_url: Some("https://github.com/owner/repo"),
@@ -695,8 +793,10 @@ mod tests {
         let project = Project {
             id: "test",
             title: "Test",
-            description: "Test",
-            long_description: "Test",
+            description_en: "Test",
+            description_es: "Test",
+            long_description_en: "Test",
+            long_description_es: "Test",
             technologies: vec![],
             status: ProjectStatus::Active,
             github_url: Some("https://github.com/enerBydev/enerby.dev"),
@@ -718,8 +818,10 @@ mod tests {
         let project = Project {
             id: "test",
             title: "Test",
-            description: "Test",
-            long_description: "Test",
+            description_en: "Test",
+            description_es: "Test",
+            long_description_en: "Test",
+            long_description_es: "Test",
             technologies: vec![],
             status: ProjectStatus::Active,
             github_url: Some("https://github.com/enerBydev/enerby.dev"),
@@ -741,8 +843,10 @@ mod tests {
         let project = Project {
             id: "test",
             title: "Test",
-            description: "Test",
-            long_description: "Test",
+            description_en: "Test",
+            description_es: "Test",
+            long_description_en: "Test",
+            long_description_es: "Test",
             technologies: vec![],
             status: ProjectStatus::Active,
             github_url: Some("https://github.com/enerBydev/nvim-config"),
@@ -896,6 +1000,7 @@ mod tests {
     #[test]
     fn test_integration_all_projects_have_valid_structure() {
         let enriched = get_projects_enriched();
+        use crate::i18n::Language;
 
         for project in &enriched {
             // Basic validation
@@ -905,8 +1010,8 @@ mod tests {
                 "Project title should not be empty"
             );
             assert!(
-                !project.description.is_empty(),
-                "Project description should not be empty"
+                !project.description(&Language::EN).is_empty(),
+                "Project description (EN) should not be empty"
             );
             assert!(
                 !project.image_fallback.is_empty(),
@@ -917,8 +1022,8 @@ mod tests {
             if let Some(ref url) = project.github_url {
                 assert!(
                     url.starts_with("https://github.com/"),
-                    "Invalid GitHub URL: {}",
-                    url
+                    "GitHub URL invalid for {}",
+                    project.id
                 );
             }
 

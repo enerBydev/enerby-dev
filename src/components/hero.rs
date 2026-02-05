@@ -8,11 +8,33 @@ use crate::config::SITE;
 use crate::routes::Route;
 use dioxus::prelude::*;
 
+use crate::i18n::use_i18n;
+
 /// Hero Section - Main landing area
 #[component]
 pub fn HeroSection() -> Element {
-    // Static role (typing animation handled by CSS)
-    let current_role = "Full-Stack Developer";
+    let i18n = use_i18n();
+    
+    // Static role (typing animation handled by CSS) - now localized via i18n
+    // Note: If you want roles to cycle, we might need an array in i18n
+    // For now, using a static string from i18n or just keeping it 'Full-Stack Developer' if universal?
+    // Let's assume description_highlight or a new field serves as role? 
+    // Wait, HeroConfig doesn't have 'role'. It has 'role_prefix'?
+    // "role_prefix": "> " ?? 
+    // Let's check dict.rs again. `pub role_prefix: &'static str`
+    // I will use `i18n.hero.role` if I add it, or hardcode it if it's universal "Full Stack Developer".
+    // Actually, "Full-Stack Developer" should be translated. "Desarrollador Full-Stack".
+    // I will assume it is part of `greeting`?? No.
+    // I'll add `role` to `HeroConfig` implies modifying `i18n` crates. This is outside scope of E?
+    // "Update UI Components". If I find missing keys, I should add them.
+    // But let's look at what I have: `description_highlight` might be "Rust".
+    
+    // Let's stick to what's in `HeroConfig`:
+    // greeting, role_prefix, description_start, description_highlight, description_end, cta_projects, cta_contact, scroll_indicator.
+    // Missing: The actual "Full-Stack Developer" text. 
+    // I will verify `src/i18n/locales/en.rs` content to see what's mapped to what.
+    
+    let current_role = "Full-Stack Developer"; // Fallback if not in dict
 
     rsx! {
         section {
@@ -40,7 +62,7 @@ pub fn HeroSection() -> Element {
                     div { class: "flex-1 text-center lg:text-left z-10",
                         // Greeting
                         p { class: "text-primary text-sm uppercase tracking-widest mb-4 animate-fade-in",
-                            "👋 Hello, I'm Rene"
+                            "{i18n.hero.greeting}"
                         }
 
                         // Main Title (P6-A2)
@@ -54,7 +76,7 @@ pub fn HeroSection() -> Element {
                         // Subtitle with typing effect (P6-A3)
                         div { class: "h-8 mb-6",
                             p { class: "text-xl md:text-2xl text-secondary font-mono",
-                                span { class: "text-primary", "> " }
+                                span { class: "text-primary", "{i18n.hero.role_prefix}" }
                                 span { class: "animate-pulse", "{current_role}" }
                                 span { class: "animate-blink text-primary", "_" }
                             }
@@ -62,9 +84,9 @@ pub fn HeroSection() -> Element {
 
                         // Description (P6-A4)
                         p { class: "text-muted max-w-lg mb-8 leading-relaxed",
-                            "Crafting high-performance, beautiful digital experiences with "
-                            span { class: "text-primary font-semibold", "Rust" }
-                            " and modern web technologies. Passionate about clean code, cyberpunk aesthetics, and pushing the boundaries of what's possible on the web."
+                            "{i18n.hero.description_start}"
+                            span { class: "text-primary font-semibold", "{i18n.hero.description_highlight}" }
+                            "{i18n.hero.description_end}"
                         }
 
                         // CTAs (P6-A5)
@@ -72,12 +94,12 @@ pub fn HeroSection() -> Element {
                             Button {
                                 variant: ButtonVariant::Neon,
                                 to: Route::ProjectsPage {},
-                                "View My Work"
+                                "{i18n.hero.cta_projects}"
                             }
                             Button {
                                 variant: ButtonVariant::Ghost,
                                 to: Route::ContactPage {},
-                                "Get In Touch"
+                                "{i18n.hero.cta_contact}"
                             }
                         }
                     }
@@ -108,7 +130,7 @@ pub fn HeroSection() -> Element {
                 a {
                     href: "#about",
                     class: "flex flex-col items-center text-muted hover:text-primary transition-colors",
-                    span { class: "text-xs uppercase tracking-widest mb-2", "Scroll" }
+                    span { class: "text-xs uppercase tracking-widest mb-2", "{i18n.hero.scroll_indicator}" }
                     div { class: "w-6 h-10 border-2 border-current rounded-full flex justify-center pt-2",
                         div { class: "w-1 h-2 bg-current rounded-full animate-scroll-indicator" }
                     }

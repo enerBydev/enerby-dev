@@ -1,0 +1,70 @@
+use crate::i18n::dict::{Dictionary, HeroConfig, NavConfig};
+
+pub const ES: Dictionary = Dictionary {
+    nav: NavConfig {
+        home: "Inicio",
+        projects: "Proyectos",
+        blog: "Blog",
+        about: "Sobre Mí",
+        contact: "Contacto",
+    },
+    hero: HeroConfig {
+        greeting: "👋 Hola, soy Rene",
+        role_prefix: "> ",
+        description_start: "Creando experiencias digitales hermosas y de alto rendimiento con ",
+        description_highlight: "Rust",
+        description_end: " y tecnologías web modernas. Apasionado por el código limpio, la estética cyberpunk y empujar los límites de la web.",
+        cta_projects: "Ver Mis Proyectos",
+        cta_contact: "Contáctame",
+        scroll_indicator: "Desplazar",
+    },
+    about: crate::i18n::dict::AboutConfig {
+        title: "Sobre Mí",
+        subtitle: "Quién Soy",
+        bio_p1_start: "Soy un desarrollador de software apasionado basado en México, especializado en ",
+        bio_p1_highlight: "Rust",
+        bio_p1_end: " y tecnologías web modernas. Con un profundo amor por la arquitectura limpia, la optimización de rendimiento y la estética cyberpunk, creo experiencias digitales hermosas y extremadamente rápidas.",
+        bio_p2: "Mi viaje en la tecnología comenzó con curiosidad y evolucionó a una pasión por construir herramientas que marquen la diferencia. Creo en el poder del código abierto, el aprendizaje continuo y empujar los límites de lo posible.",
+        stat_experience: "Años de Experiencia",
+        stat_projects: "Proyectos Activos",
+        stat_technologies: "Tecnologías",
+        stat_loc: "Líneas de Código",
+        timeline_title: "Cronología de Experiencia",
+        timeline: &[
+            crate::i18n::dict::TimelineItemData {
+                year: "2024 - Presente",
+                title: "Desarrollador Full-Stack",
+                company: "Freelance",
+                description: "Construyendo aplicaciones web de alto rendimiento con Rust, Dioxus y tecnologías frontend modernas.",
+            },
+            crate::i18n::dict::TimelineItemData {
+                year: "2022 - 2024",
+                title: "Ingeniero de Software",
+                company: "Startup Tecnológica",
+                description: "Lideré el desarrollo de sistemas en tiempo real y contribuí a decisiones de arquitectura core.",
+            },
+            crate::i18n::dict::TimelineItemData {
+                year: "2020 - 2022",
+                title: "Desarrollador Junior",
+                company: "Agencia Digital",
+                description: "Comencé mi viaje en el desarrollo web, aprendiendo fundamentos y mejores prácticas.",
+            },
+        ],
+    },
+    footer: crate::i18n::dict::FooterConfig {
+        built_with: "Creado con ",
+        and: " y ",
+    },
+    projects: crate::i18n::dict::ProjectsConfig {
+        title: "Proyectos",
+        subtitle: "Lo que he Construido",
+        section_featured: "⭐ Destacados",
+        section_active: "🚀 En Progreso",
+        view_all: "Ver Todos →",
+        btn_github: "GitHub",
+        btn_demo: "Demo en Vivo",
+        btn_demo_github: "Demo GitHub",
+        badge_auto: "Auto",
+        tooltip_auto: "Detectado automáticamente de GitHub",
+    },
+};

@@ -21,11 +21,18 @@ pub struct Frontmatter {
     pub read_time: Option<u8>,
 }
 
+#[derive(Debug, Clone, PartialEq)]
+pub enum PostLanguage {
+    EN,
+    ES,
+}
+
 pub struct MarkdownPost {
     pub frontmatter: Frontmatter,
     pub content_html: String,
-    /// Calculated or provided read time in minutes
     pub read_time_minutes: u8,
+    pub language: PostLanguage,
+    pub file_slug: String,
 }
 
 /// Calculate read time based on word count
@@ -40,16 +47,26 @@ fn calculate_read_time(content: &str) -> u8 {
 pub fn load_markdown_posts() -> Vec<MarkdownPost> {
     let mut posts: Vec<MarkdownPost> = Vec::new();
 
-    for filename in Asset::iter() {
-        if filename.as_ref().ends_with(".md") {
-            if let Some(file) = Asset::get(filename.as_ref()) {
+    for filename_cow in Asset::iter() {
+        let filename = filename_cow.as_ref();
+        if filename.ends_with(".md") {
+            // Parse filename for language: slug.lang.md
+            // Default to EN if pattern doesn't match
+            let (file_slug, language) = if filename.ends_with(".es.md") {
+                 (filename.trim_end_matches(".es.md").to_string(), PostLanguage::ES)
+            } else if filename.ends_with(".en.md") {
+                 (filename.trim_end_matches(".en.md").to_string(), PostLanguage::EN)
+            } else {
+                 (filename.trim_end_matches(".md").to_string(), PostLanguage::EN)
+            };
+
+            if let Some(file) = Asset::get(filename) {
                 if let Ok(content_str) = std::str::from_utf8(file.data.as_ref()) {
                     let matter = Matter::<YAML>::new();
                     let result = matter.parse(content_str);
 
                     if let Some(data) = result.data {
                         if let Ok(frontmatter) = data.deserialize::<Frontmatter>() {
-                            // Calculate read time from content if not provided
                             let read_time_minutes = frontmatter
                                 .read_time
                                 .unwrap_or_else(|| calculate_read_time(&result.content));
@@ -62,6 +79,8 @@ pub fn load_markdown_posts() -> Vec<MarkdownPost> {
                                 frontmatter,
                                 content_html: html_output,
                                 read_time_minutes,
+                                language,
+                                file_slug, // This is the ID grouping key
                             });
                         }
                     }
@@ -69,10 +88,7 @@ pub fn load_markdown_posts() -> Vec<MarkdownPost> {
             }
         }
     }
-
-    // Sort by date (descending)
-    posts.sort_by(|a, b| b.frontmatter.date.cmp(&a.frontmatter.date));
-
+    
     posts
 }
 

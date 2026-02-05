@@ -1,0 +1,70 @@
+use crate::i18n::dict::{Dictionary, HeroConfig, NavConfig};
+
+pub const EN: Dictionary = Dictionary {
+    nav: NavConfig {
+        home: "Home",
+        projects: "Projects",
+        blog: "Blog",
+        about: "About",
+        contact: "Contact",
+    },
+    hero: HeroConfig {
+        greeting: "👋 Hello, I'm Rene",
+        role_prefix: "> ",
+        description_start: "Crafting high-performance, beautiful digital experiences with ",
+        description_highlight: "Rust",
+        description_end: " and modern web technologies. Passionate about clean code, cyberpunk aesthetics, and pushing the boundaries of what's possible on the web.",
+        cta_projects: "View My Work",
+        cta_contact: "Get In Touch",
+        scroll_indicator: "Scroll",
+    },
+    about: crate::i18n::dict::AboutConfig {
+        title: "About Me",
+        subtitle: "Who I Am",
+        bio_p1_start: "I'm a passionate software developer based in Mexico, specializing in ",
+        bio_p1_highlight: "Rust",
+        bio_p1_end: " and modern web technologies. With a deep love for clean architecture, performance optimization, and cyberpunk aesthetics, I craft digital experiences that are both beautiful and blazingly fast.",
+        bio_p2: "My journey in tech started with curiosity and evolved into a passion for building tools that make a difference. I believe in the power of open source, continuous learning, and pushing the boundaries of what's possible.",
+        stat_experience: "Years Experience",
+        stat_projects: "Living Projects",
+        stat_technologies: "Technologies",
+        stat_loc: "Lines of Code",
+        timeline_title: "Experience Timeline",
+        timeline: &[
+            crate::i18n::dict::TimelineItemData {
+                year: "2024 - Present",
+                title: "Full-Stack Developer",
+                company: "Freelance",
+                description: "Building high-performance web applications with Rust, Dioxus, and modern frontend technologies.",
+            },
+            crate::i18n::dict::TimelineItemData {
+                year: "2022 - 2024",
+                title: "Software Engineer",
+                company: "Tech Startup",
+                description: "Led development of real-time systems and contributed to core architecture decisions.",
+            },
+            crate::i18n::dict::TimelineItemData {
+                year: "2020 - 2022",
+                title: "Junior Developer",
+                company: "Digital Agency",
+                description: "Started journey with web development, learning fundamentals and best practices.",
+            },
+        ],
+    },
+    footer: crate::i18n::dict::FooterConfig {
+        built_with: "Built with ",
+        and: " & ",
+    },
+    projects: crate::i18n::dict::ProjectsConfig {
+        title: "Projects",
+        subtitle: "What I've Built",
+        section_featured: "⭐ Featured",
+        section_active: "🚀 In Progress",
+        view_all: "View All Projects →",
+        btn_github: "GitHub",
+        btn_demo: "Live Demo",
+        btn_demo_github: "GitHub Demo",
+        badge_auto: "Auto",
+        tooltip_auto: "Auto-detected from GitHub",
+    },
+};

@@ -15,13 +15,23 @@ pub enum SkillCategory {
     Concepts,
 }
 
+use crate::i18n::Language;
+
 impl SkillCategory {
-    pub fn label(&self) -> &'static str {
-        match self {
-            Self::Languages => "Languages",
-            Self::Frameworks => "Frameworks & Libraries",
-            Self::Tools => "Tools & Platforms",
-            Self::Concepts => "Concepts & Practices",
+    pub fn label(&self, lang: &Language) -> &'static str {
+        match lang {
+            Language::EN => match self {
+                Self::Languages => "Languages",
+                Self::Frameworks => "Frameworks & Libraries",
+                Self::Tools => "Tools & Platforms",
+                Self::Concepts => "Concepts & Practices",
+            },
+            Language::ES => match self {
+                Self::Languages => "Lenguajes",
+                Self::Frameworks => "Frameworks y Librerías",
+                Self::Tools => "Herramientas y Plataformas",
+                Self::Concepts => "Conceptos y Prácticas",
+            },
         }
     }
 
@@ -286,10 +296,13 @@ pub fn SkillsSection() -> Element {
     }
 }
 
+use crate::i18n::I18N_CONFIG;
+
 /// Featured Skill Badge (P8-B1)
 #[component]
 fn FeaturedSkillBadge(skill: Skill) -> Element {
     let _color = skill.category.color();
+    let lang = I18N_CONFIG.read().language;
 
     rsx! {
         div { class: "group relative",
@@ -301,7 +314,7 @@ fn FeaturedSkillBadge(skill: Skill) -> Element {
             // Hover tooltip (P8-B5)
             div { class: "absolute -bottom-2 left-1/2 -translate-x-1/2 translate-y-full opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none",
                 div { class: "bg-bg-card border border-white/10 rounded px-2 py-1 text-xs text-muted whitespace-nowrap",
-                    "{skill.category.label()}"
+                    "{skill.category.label(&lang)}"
                 }
             }
         }
@@ -312,11 +325,12 @@ fn FeaturedSkillBadge(skill: Skill) -> Element {
 #[component]
 fn SkillCategoryCard(category: SkillCategory, skills: Vec<Skill>) -> Element {
     let color = category.color();
+    let lang = I18N_CONFIG.read().language;
 
     rsx! {
         Card { class: "animate-fade-in-up".to_string(),
             h4 { class: "text-lg font-bold text-white mb-6 flex items-center gap-2",
-                Badge { color: color.to_string(), "{category.label()}" }
+                Badge { color: color.to_string(), "{category.label(&lang)}" }
             }
 
             div { class: "space-y-4",
