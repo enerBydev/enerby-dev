@@ -9,7 +9,6 @@ tags:
   - Supabase
   - Cloudflare
 featured: false
-read_time: 10
 ---
 
 # El Stack Moderno

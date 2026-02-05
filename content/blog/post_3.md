@@ -9,7 +9,6 @@ tags:
   - DDD
   - Clean Code
 featured: true
-read_time: 15
 ---
 
 # Arquitectura Hexagonal en Rust

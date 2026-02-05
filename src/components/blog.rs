@@ -43,7 +43,7 @@ pub fn get_blog_posts() -> Vec<BlogPost> {
                 excerpt: post.frontmatter.excerpt,
                 content: post.content_html,
                 date: post.frontmatter.date,
-                read_time: post.frontmatter.read_time,
+                read_time: post.read_time_minutes,
                 tags: post.frontmatter.tags,
                 status: PostStatus::Published, // Default to published for now
                 featured: post.frontmatter.featured,

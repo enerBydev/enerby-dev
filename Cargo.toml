@@ -21,7 +21,7 @@ toml = "0.8"
 # Markdown parsing (para blog)
 pulldown-cmark = "0.9"
 gray_matter = "0.2"
-rust-embed = "8.0"
+rust-embed = { version = "8.0", features = ["debug-embed"] }
 
 # Utilidades
 chrono = { version = "0.4", features = ["serde"] }

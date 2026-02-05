@@ -38,7 +38,7 @@ pub fn ProjectsPage() -> Element {
                 if !featured.is_empty() {
                     div { class: "mb-12",
                         h3 { class: "text-lg font-bold text-primary mb-6", "⭐ Featured Projects" }
-                        Grid { cols: 1, md_cols: 2, gap: 6,
+                        Grid { cols: 1, md_cols: 1, gap: 8,
                             for project in featured.iter() {
                                 ProjectCard { project: project.clone(), featured: true }
                             }
@@ -50,9 +50,9 @@ pub fn ProjectsPage() -> Element {
                 if !active.is_empty() {
                     div { class: "mb-12",
                         h3 { class: "text-lg font-bold text-purple-400 mb-6", "🚀 Active Projects" }
-                        Grid { cols: 1, md_cols: 2, gap: 6,
+                        Grid { cols: 1, md_cols: 1, gap: 8,
                             for project in active.iter() {
-                                ProjectCard { project: project.clone(), featured: false }
+                                ProjectCard { project: project.clone(), featured: true }
                             }
                         }
                     }
@@ -62,9 +62,9 @@ pub fn ProjectsPage() -> Element {
                 if !archived.is_empty() {
                     div { class: "mb-12",
                         h3 { class: "text-lg font-bold text-orange-400 mb-6", "📦 Archived Projects" }
-                        Grid { cols: 1, md_cols: 2, gap: 6,
+                        Grid { cols: 1, md_cols: 1, gap: 8,
                             for project in archived.iter() {
-                                ProjectCard { project: project.clone(), featured: false }
+                                ProjectCard { project: project.clone(), featured: true }
                             }
                         }
                     }
