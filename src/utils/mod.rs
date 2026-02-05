@@ -1,6 +1,8 @@
 //! Utils Module - Helper functions
 //! Common utilities for formatting, parsing, etc.
 
+pub mod github_api;
+pub mod github_cache;
 pub mod github_stats;
 pub mod markdown_loader;
 pub mod project_images;
@@ -10,6 +12,18 @@ pub use project_images::{get_project_image_url, has_real_image, ImageSource};
 
 // Re-export github_stats public API
 pub use github_stats::{format_loc, get_github_stats, GitHubStats};
+
+// Re-export github_api public API
+pub use github_api::{
+    ApiError, GitHubApiConfig, GitHubRepoInfo, GITHUB_API_BASE_URL, USER_AGENT,
+    get_repo_info, get_repo_homepage, get_all_repos, parse_github_url, get_homepage_from_url,
+};
+
+// Re-export github_cache public API
+pub use github_cache::{
+    CacheEntry, GitHubCache, DEFAULT_TTL_SECONDS,
+    global_cache, get_cached_repo, set_cached_repo,
+};
 
 use pulldown_cmark::{html, Parser};
 

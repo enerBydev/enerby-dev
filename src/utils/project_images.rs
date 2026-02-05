@@ -189,15 +189,7 @@ pub fn get_project_image_url(project: &Project) -> ImageSource {
     ImageSource::Fallback(project.image_fallback.to_string())
 }
 
-/// Returns image URL as String (for use in RSX)
-pub fn get_project_image_url_string(project: &Project) -> String {
-    get_project_image_url(project).to_string()
-}
 
-/// Returns true if the project has a real image URL (not fallback emoji)
-pub fn has_real_image(project: &Project) -> bool {
-    get_project_image_url(project).is_real_image()
-}
 
 // =============================================================================
 // TESTS

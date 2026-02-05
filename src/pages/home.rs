@@ -4,7 +4,7 @@ use crate::components::about::AboutSection;
 use crate::components::blog::BlogSection;
 use crate::components::contact::ContactSection;
 use crate::components::hero::HeroSection;
-use crate::components::projects::ProjectsSection;
+use crate::components::projects::EnrichedProjectsSection;
 use crate::components::seo::SeoHead;
 use crate::components::skills::SkillsSection;
 use dioxus::prelude::*;
@@ -26,7 +26,7 @@ pub fn HomePage() -> Element {
         SkillsSection {}
 
         // Projects Section (P9)
-        ProjectsSection {}
+        EnrichedProjectsSection {}
 
         // Blog Section (P10)
         BlogSection {}
