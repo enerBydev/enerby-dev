@@ -151,9 +151,9 @@ impl GitHubCache {
     /// Returns `Some((data, is_stale))` if entry exists
     pub fn get_with_stale(&self, owner: &str, repo: &str) -> Option<(&GitHubRepoInfo, bool)> {
         let key = Self::make_key(owner, repo);
-        self.entries.get(&key).map(|entry| {
-            (&entry.data, entry.is_expired())
-        })
+        self.entries
+            .get(&key)
+            .map(|entry| (&entry.data, entry.is_expired()))
     }
 
     /// Sets a cache entry with default TTL
@@ -164,7 +164,13 @@ impl GitHubCache {
     }
 
     /// Sets a cache entry with custom TTL
-    pub fn set_with_ttl(&mut self, owner: &str, repo: &str, data: GitHubRepoInfo, ttl_seconds: u64) {
+    pub fn set_with_ttl(
+        &mut self,
+        owner: &str,
+        repo: &str,
+        data: GitHubRepoInfo,
+        ttl_seconds: u64,
+    ) {
         let key = Self::make_key(owner, repo);
         let entry = CacheEntry::new(data, ttl_seconds);
         self.entries.insert(key, entry);
@@ -250,7 +256,7 @@ impl GitHubCache {
     /// Pre-populates cache from static data (used for initialization)
     pub fn populate_from_static(&mut self) {
         use super::github_api::get_all_repos;
-        
+
         for repo in get_all_repos() {
             // Clone full_name before split to avoid borrow issues
             let full_name = repo.full_name.clone();
@@ -345,7 +351,7 @@ mod tests {
     fn test_cache_entry_new() {
         let repo = create_test_repo("test");
         let entry = CacheEntry::new(repo.clone(), 3600);
-        
+
         assert_eq!(entry.data.name, "test");
         assert_eq!(entry.ttl_seconds, 3600);
         assert!(entry.cached_at > 0);
@@ -355,7 +361,7 @@ mod tests {
     fn test_cache_entry_with_default_ttl() {
         let repo = create_test_repo("test");
         let entry = CacheEntry::with_default_ttl(repo);
-        
+
         assert_eq!(entry.ttl_seconds, DEFAULT_TTL_SECONDS);
     }
 
@@ -363,7 +369,7 @@ mod tests {
     fn test_cache_entry_not_expired() {
         let repo = create_test_repo("test");
         let entry = CacheEntry::new(repo, 3600); // 1 hour TTL
-        
+
         assert!(!entry.is_expired());
     }
 
@@ -371,10 +377,10 @@ mod tests {
     fn test_cache_entry_expired() {
         let repo = create_test_repo("test");
         let mut entry = CacheEntry::new(repo, 1); // 1 second TTL
-        
+
         // Force expiration by setting cached_at to the past
         entry.cached_at = entry.cached_at.saturating_sub(10);
-        
+
         assert!(entry.is_expired());
     }
 
@@ -382,7 +388,7 @@ mod tests {
     fn test_cache_entry_age() {
         let repo = create_test_repo("test");
         let entry = CacheEntry::new(repo, 3600);
-        
+
         // Age should be very small (just created)
         assert!(entry.age_seconds() < 2);
     }
@@ -391,7 +397,7 @@ mod tests {
     fn test_cache_entry_remaining_ttl() {
         let repo = create_test_repo("test");
         let entry = CacheEntry::new(repo, 3600);
-        
+
         // Remaining TTL should be close to 3600
         let remaining = entry.remaining_ttl();
         assert!(remaining > 3590 && remaining <= 3600);
@@ -418,9 +424,9 @@ mod tests {
     fn test_cache_set_get() {
         let mut cache = GitHubCache::new();
         let repo = create_test_repo("myrepo");
-        
+
         cache.set("owner", "myrepo", repo.clone());
-        
+
         let cached = cache.get("owner", "myrepo");
         assert!(cached.is_some());
         assert_eq!(cached.unwrap().name, "myrepo");
@@ -430,9 +436,9 @@ mod tests {
     fn test_cache_case_insensitive() {
         let mut cache = GitHubCache::new();
         let repo = create_test_repo("MyRepo");
-        
+
         cache.set("Owner", "MyRepo", repo);
-        
+
         // Should find with different case
         assert!(cache.get("owner", "myrepo").is_some());
         assert!(cache.get("OWNER", "MYREPO").is_some());
@@ -448,12 +454,12 @@ mod tests {
     fn test_cache_get_with_stale() {
         let mut cache = GitHubCache::new();
         let repo = create_test_repo("test");
-        
+
         cache.set("owner", "test", repo);
-        
+
         let result = cache.get_with_stale("owner", "test");
         assert!(result.is_some());
-        
+
         let (data, is_stale) = result.unwrap();
         assert_eq!(data.name, "test");
         assert!(!is_stale); // Just created, should not be stale
@@ -463,10 +469,10 @@ mod tests {
     fn test_cache_remove() {
         let mut cache = GitHubCache::new();
         let repo = create_test_repo("test");
-        
+
         cache.set("owner", "test", repo);
         assert!(cache.get("owner", "test").is_some());
-        
+
         let removed = cache.remove("owner", "test");
         assert!(removed.is_some());
         assert!(cache.get("owner", "test").is_none());
@@ -477,9 +483,9 @@ mod tests {
         let mut cache = GitHubCache::new();
         cache.set("owner", "repo1", create_test_repo("repo1"));
         cache.set("owner", "repo2", create_test_repo("repo2"));
-        
+
         assert_eq!(cache.len(), 2);
-        
+
         cache.clear();
         assert!(cache.is_empty());
     }
@@ -489,12 +495,12 @@ mod tests {
         let mut cache = GitHubCache::new();
         cache.set("owner", "repo1", create_test_repo("repo1"));
         cache.set_with_ttl("owner", "repo2", create_test_repo("repo2"), 1);
-        
+
         // Force repo2 to expire
         if let Some(entry) = cache.entries.get_mut("owner/repo2") {
             entry.cached_at = entry.cached_at.saturating_sub(10);
         }
-        
+
         assert_eq!(cache.len(), 2);
         assert_eq!(cache.len_valid(), 1);
     }
@@ -504,12 +510,12 @@ mod tests {
         let mut cache = GitHubCache::new();
         cache.set("owner", "fresh", create_test_repo("fresh"));
         cache.set_with_ttl("owner", "stale", create_test_repo("stale"), 1);
-        
+
         // Force stale to expire
         if let Some(entry) = cache.entries.get_mut("owner/stale") {
             entry.cached_at = entry.cached_at.saturating_sub(10);
         }
-        
+
         assert_eq!(cache.len(), 2);
         cache.cleanup_expired();
         assert_eq!(cache.len(), 1);
@@ -520,16 +526,16 @@ mod tests {
     fn test_cache_has_fresh_and_has_any() {
         let mut cache = GitHubCache::new();
         cache.set_with_ttl("owner", "test", create_test_repo("test"), 1);
-        
+
         // Fresh entry
         assert!(cache.has_fresh("owner", "test"));
         assert!(cache.has_any("owner", "test"));
-        
+
         // Force expiration
         if let Some(entry) = cache.entries.get_mut("owner/test") {
             entry.cached_at = entry.cached_at.saturating_sub(10);
         }
-        
+
         // Stale entry
         assert!(!cache.has_fresh("owner", "test"));
         assert!(cache.has_any("owner", "test"));
@@ -543,10 +549,10 @@ mod tests {
     fn test_cache_to_json() {
         let mut cache = GitHubCache::new();
         cache.set("owner", "test", create_test_repo("test"));
-        
+
         let json = cache.to_json();
         assert!(json.is_ok());
-        
+
         let json_str = json.unwrap();
         assert!(json_str.contains("owner/test"));
         assert!(json_str.contains("\"name\": \"test\""));
@@ -556,10 +562,10 @@ mod tests {
     fn test_cache_from_json() {
         let mut original = GitHubCache::new();
         original.set("owner", "test", create_test_repo("test"));
-        
+
         let json = original.to_json().unwrap();
         let restored = GitHubCache::from_json(&json);
-        
+
         assert!(restored.is_ok());
         let restored = restored.unwrap();
         assert!(restored.get("owner", "test").is_some());
@@ -569,10 +575,10 @@ mod tests {
     fn test_cache_load_or_empty_valid() {
         let mut original = GitHubCache::new();
         original.set("owner", "test", create_test_repo("test"));
-        
+
         let json = original.to_json().unwrap();
         let loaded = GitHubCache::load_or_empty(&json);
-        
+
         assert!(loaded.get("owner", "test").is_some());
     }
 
@@ -586,12 +592,12 @@ mod tests {
     fn test_cache_merge() {
         let mut cache1 = GitHubCache::new();
         cache1.set("owner", "repo1", create_test_repo("repo1"));
-        
+
         let mut cache2 = GitHubCache::new();
         cache2.set("owner", "repo2", create_test_repo("repo2"));
-        
+
         cache1.merge(cache2);
-        
+
         assert!(cache1.get("owner", "repo1").is_some());
         assert!(cache1.get("owner", "repo2").is_some());
     }
@@ -600,7 +606,7 @@ mod tests {
     fn test_cache_populate_from_static() {
         let mut cache = GitHubCache::new();
         cache.populate_from_static();
-        
+
         // Should have the static repos from github_api
         assert!(cache.len() >= 4);
         assert!(cache.get("enerBydev", "enerby.dev").is_some());
@@ -615,6 +621,9 @@ mod tests {
         // Global cache should be populated with static data
         let repo = get_cached_repo("enerBydev", "enerby.dev");
         assert!(repo.is_some());
-        assert_eq!(repo.unwrap().homepage, Some("https://enerby.dev".to_string()));
+        assert_eq!(
+            repo.unwrap().homepage,
+            Some("https://enerby.dev".to_string())
+        );
     }
 }

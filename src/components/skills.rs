@@ -289,7 +289,7 @@ pub fn SkillsSection() -> Element {
 /// Featured Skill Badge (P8-B1)
 #[component]
 fn FeaturedSkillBadge(skill: Skill) -> Element {
-    let color = skill.category.color();
+    let _color = skill.category.color();
 
     rsx! {
         div { class: "group relative",

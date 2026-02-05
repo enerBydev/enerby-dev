@@ -147,7 +147,10 @@ pub fn generate_thumbio_url(demo_url: &str) -> String {
 /// Generates ThumbIO URL with custom dimensions
 #[allow(dead_code)]
 pub fn generate_thumbio_url_custom(demo_url: &str, width: u32, height: u32) -> String {
-    format!("{}/width/{}/crop/{}/{}", THUMBIO_BASE, width, height, demo_url)
+    format!(
+        "{}/width/{}/crop/{}/{}",
+        THUMBIO_BASE, width, height, demo_url
+    )
 }
 
 // =============================================================================
@@ -188,8 +191,6 @@ pub fn get_project_image_url(project: &Project) -> ImageSource {
     // Priority 4: Fallback emoji
     ImageSource::Fallback(project.image_fallback.to_string())
 }
-
-
 
 // =============================================================================
 // TESTS
@@ -340,17 +341,7 @@ mod tests {
     // Helper Function Tests
     // =========================================================================
 
-    #[test]
-    fn test_has_real_image_true() {
-        let project = create_mock_project(Some("https://github.com/owner/repo"), None, None);
-        assert!(has_real_image(&project));
-    }
 
-    #[test]
-    fn test_has_real_image_false() {
-        let project = create_mock_project(None, None, None);
-        assert!(!has_real_image(&project));
-    }
 
     #[test]
     fn test_image_source_is_real_image() {

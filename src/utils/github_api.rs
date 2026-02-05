@@ -213,13 +213,20 @@ fn get_static_repo_data() -> Vec<GitHubRepoInfo> {
             forks_count: 0,
             fork: false,
             archived: false,
-            topics: vec!["rust".to_string(), "dioxus".to_string(), "portfolio".to_string(), "wasm".to_string()],
+            topics: vec![
+                "rust".to_string(),
+                "dioxus".to_string(),
+                "portfolio".to_string(),
+                "wasm".to_string(),
+            ],
             html_url: "https://github.com/enerBydev/enerby.dev".to_string(),
         },
         GitHubRepoInfo {
             name: "oc_diagdoc".to_string(),
             full_name: "enerBydev/oc_diagdoc".to_string(),
-            description: Some("command-line-utilities, text-processing, development-tools".to_string()),
+            description: Some(
+                "command-line-utilities, text-processing, development-tools".to_string(),
+            ),
             homepage: Some("https://www.google.com".to_string()), // Placeholder confirmed on GitHub
             language: Some("Rust".to_string()),
             stargazers_count: 0,
@@ -239,7 +246,11 @@ fn get_static_repo_data() -> Vec<GitHubRepoInfo> {
             forks_count: 0,
             fork: false,
             archived: false,
-            topics: vec!["neovim".to_string(), "lua".to_string(), "dotfiles".to_string()],
+            topics: vec![
+                "neovim".to_string(),
+                "lua".to_string(),
+                "dotfiles".to_string(),
+            ],
             html_url: "https://github.com/enerBydev/nvim-config".to_string(),
         },
         GitHubRepoInfo {
@@ -332,7 +343,7 @@ pub fn fetch_multiple_repos(repos: &[(&str, &str)]) -> Vec<Result<GitHubRepoInfo
 /// * `None` if invalid format
 pub fn parse_github_url(github_url: &str) -> Option<(String, String)> {
     let url = github_url.trim();
-    
+
     // Handle different URL formats
     let path = if url.starts_with("https://github.com/") {
         url.strip_prefix("https://github.com/")
@@ -346,7 +357,7 @@ pub fn parse_github_url(github_url: &str) -> Option<(String, String)> {
 
     // Split path into owner/repo
     let parts: Vec<&str> = path.split('/').filter(|s| !s.is_empty()).collect();
-    
+
     if parts.len() >= 2 {
         Some((parts[0].to_string(), parts[1].to_string()))
     } else {
@@ -365,8 +376,7 @@ pub fn parse_github_url(github_url: &str) -> Option<(String, String)> {
 /// * `Some(homepage_url)` if found and valid
 /// * `None` otherwise
 pub fn get_homepage_from_url(github_url: &str) -> Option<String> {
-    parse_github_url(github_url)
-        .and_then(|(owner, repo)| get_repo_homepage(&owner, &repo))
+    parse_github_url(github_url).and_then(|(owner, repo)| get_repo_homepage(&owner, &repo))
 }
 
 // ============================================================================
@@ -402,7 +412,10 @@ mod tests {
 
         assert_eq!(repo.name, "enerby.dev");
         assert_eq!(repo.full_name, "enerBydev/enerby.dev");
-        assert_eq!(repo.description, Some("Personal portfolio website".to_string()));
+        assert_eq!(
+            repo.description,
+            Some("Personal portfolio website".to_string())
+        );
         assert_eq!(repo.homepage, Some("https://enerby.dev".to_string()));
         assert_eq!(repo.language, Some("Rust".to_string()));
         assert_eq!(repo.stargazers_count, 42);
@@ -463,7 +476,10 @@ mod tests {
             html_url: "https://github.com/owner/test".to_string(),
         };
 
-        assert_eq!(repo.extract_homepage(), Some("https://example.com".to_string()));
+        assert_eq!(
+            repo.extract_homepage(),
+            Some("https://example.com".to_string())
+        );
     }
 
     /// Test: extract_homepage with empty string
@@ -543,7 +559,10 @@ mod tests {
             html_url: "https://github.com/owner/test".to_string(),
         };
 
-        assert_eq!(repo.extract_homepage(), Some("https://example.com".to_string()));
+        assert_eq!(
+            repo.extract_homepage(),
+            Some("https://example.com".to_string())
+        );
     }
 
     /// Test: GitHubApiConfig default values
@@ -562,10 +581,7 @@ mod tests {
 
     #[test]
     fn test_api_error_display() {
-        assert_eq!(
-            format!("{}", ApiError::NotFound),
-            "Repository not found"
-        );
+        assert_eq!(format!("{}", ApiError::NotFound), "Repository not found");
         assert_eq!(
             format!("{}", ApiError::RateLimited),
             "GitHub API rate limit exceeded"
@@ -618,7 +634,7 @@ mod tests {
 
     #[test]
     fn test_get_repo_homepage_no_homepage() {
-        let result = get_repo_homepage("enerBydev", "oc_diagdoc");
+        let result = get_repo_homepage("enerBydev", "nvim-config");
         assert_eq!(result, None);
     }
 
@@ -679,7 +695,7 @@ mod tests {
 
     #[test]
     fn test_get_homepage_from_url_no_homepage() {
-        let result = get_homepage_from_url("https://github.com/enerBydev/oc_diagdoc");
+        let result = get_homepage_from_url("https://github.com/enerBydev/nvim-config");
         assert_eq!(result, None);
     }
 
@@ -694,9 +710,9 @@ mod tests {
             ("enerBydev", "oc_diagdoc"),
             ("nonexistent", "repo"),
         ];
-        
+
         let results = fetch_multiple_repos(repos);
-        
+
         assert_eq!(results.len(), 3);
         assert!(results[0].is_ok());
         assert!(results[1].is_ok());
@@ -716,4 +732,3 @@ mod tests {
         assert!(repo.homepage.is_none());
     }
 }
-

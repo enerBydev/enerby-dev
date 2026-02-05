@@ -5,7 +5,8 @@ use crate::components::atoms::{Badge, Button, ButtonVariant};
 use crate::components::layout_components::{Container, Grid, Section};
 use crate::components::molecules::{Card, SectionTitle};
 use crate::routes::Route;
-use crate::utils::{get_project_image_url, parse_github_url, ImageSource};
+use crate::utils::github_api::parse_github_url;
+use crate::utils::{ImageSource, get_project_image_url};
 use dioxus::prelude::*;
 
 /// Project Status (P9-A4)
@@ -161,13 +162,17 @@ impl From<Project> for EnrichedProject {
             demo_url: p.demo_url.map(|s| s.to_string()),
             image_override: p.image_override.map(|s| s.to_string()),
             image_fallback: p.image_fallback.to_string(),
-            demo_url_source: if p.demo_url.is_some() { DemoUrlSource::Manual } else { DemoUrlSource::None },
+            demo_url_source: if p.demo_url.is_some() {
+                DemoUrlSource::Manual
+            } else {
+                DemoUrlSource::None
+            },
         }
     }
 }
 
 /// Enriches a project with GitHub data
-/// 
+///
 /// If the project has a github_url but no demo_url, attempts to fetch
 /// the homepage field from the GitHub repository.
 ///
@@ -181,12 +186,11 @@ pub fn enrich_project_with_github(project: Project) -> EnrichedProject {
 
     // DEBUG PROBE REMOVED
 
-    
     // If demo_url already exists (manually set), keep it
     if enriched.demo_url.is_some() {
         return enriched;
     }
-    
+
     // Try to get homepage from GitHub
     if let Some(github_url) = &project.github_url {
         if let Some((owner, repo)) = parse_github_url(github_url) {
@@ -194,14 +198,14 @@ pub fn enrich_project_with_github(project: Project) -> EnrichedProject {
             println!("enriching: {}", &project.id);
             if let Ok(repo_info) = crate::utils::github_api::get_repo_info(&owner, &repo) {
                 println!("found repo: {}", &repo_info.full_name);
-                
+
                 // Enrich Homepage
                 if let Some(homepage) = repo_info.extract_homepage() {
                     println!("updating demo_url: {}", &homepage);
                     enriched.demo_url = Some(homepage);
                     enriched.demo_url_source = DemoUrlSource::GitHub;
                 }
-                
+
                 // Enrich Description (if available)
                 if let Some(desc) = &repo_info.description {
                     println!("checking description: '{}'", desc);
@@ -210,7 +214,7 @@ pub fn enrich_project_with_github(project: Project) -> EnrichedProject {
                         enriched.description = desc.clone();
                     }
                 }
-                
+
                 // Enrich Technologies/Topics (if available)
                 if !repo_info.topics.is_empty() {
                     println!("merging topics: {:?}", &repo_info.topics);
@@ -228,7 +232,7 @@ pub fn enrich_project_with_github(project: Project) -> EnrichedProject {
             }
         }
     }
-    
+
     enriched
 }
 
@@ -263,10 +267,19 @@ pub struct EnrichmentStats {
 pub fn get_enrichment_stats() -> EnrichmentStats {
     let enriched = get_projects_enriched();
     let total = enriched.len();
-    let manual = enriched.iter().filter(|p| p.demo_url_source == DemoUrlSource::Manual).count();
-    let github = enriched.iter().filter(|p| p.demo_url_source == DemoUrlSource::GitHub).count();
-    let none = enriched.iter().filter(|p| p.demo_url_source == DemoUrlSource::None).count();
-    
+    let manual = enriched
+        .iter()
+        .filter(|p| p.demo_url_source == DemoUrlSource::Manual)
+        .count();
+    let github = enriched
+        .iter()
+        .filter(|p| p.demo_url_source == DemoUrlSource::GitHub)
+        .count();
+    let none = enriched
+        .iter()
+        .filter(|p| p.demo_url_source == DemoUrlSource::None)
+        .count();
+
     EnrichmentStats {
         total_projects: total,
         manual_demo_urls: manual,
@@ -423,12 +436,15 @@ pub fn ProjectCard(project: Project, #[props(default = false)] featured: bool) -
 // ============================================================================
 
 /// Enriched Project Card with GitHub demo_url source indicator
-/// 
+///
 /// This component uses EnrichedProject and shows:
 /// - Visual indicator (GitHub icon) if demo_url came from GitHub
 /// - Tooltip explaining the source
 #[component]
-pub fn EnrichedProjectCard(project: EnrichedProject, #[props(default = false)] featured: bool) -> Element {
+pub fn EnrichedProjectCard(
+    project: EnrichedProject,
+    #[props(default = false)] featured: bool,
+) -> Element {
     let card_class = if featured {
         "mb-8".to_string()
     } else {
@@ -441,11 +457,24 @@ pub fn EnrichedProjectCard(project: EnrichedProject, #[props(default = false)] f
         title: Box::leak(project.title.clone().into_boxed_str()),
         description: Box::leak(project.description.clone().into_boxed_str()),
         long_description: Box::leak(project.long_description.clone().into_boxed_str()),
-        technologies: project.technologies.iter().map(|s| -> &'static str { Box::leak(s.clone().into_boxed_str()) }).collect(),
+        technologies: project
+            .technologies
+            .iter()
+            .map(|s| -> &'static str { Box::leak(s.clone().into_boxed_str()) })
+            .collect(),
         status: project.status,
-        github_url: project.github_url.as_ref().map(|s| -> &'static str { Box::leak(s.clone().into_boxed_str()) }),
-        demo_url: project.demo_url.as_ref().map(|s| -> &'static str { Box::leak(s.clone().into_boxed_str()) }),
-        image_override: project.image_override.as_ref().map(|s| -> &'static str { Box::leak(s.clone().into_boxed_str()) }),
+        github_url: project
+            .github_url
+            .as_ref()
+            .map(|s| -> &'static str { Box::leak(s.clone().into_boxed_str()) }),
+        demo_url: project
+            .demo_url
+            .as_ref()
+            .map(|s| -> &'static str { Box::leak(s.clone().into_boxed_str()) }),
+        image_override: project
+            .image_override
+            .as_ref()
+            .map(|s| -> &'static str { Box::leak(s.clone().into_boxed_str()) }),
         image_fallback: Box::leak(project.image_fallback.clone().into_boxed_str()),
     };
 
@@ -529,7 +558,7 @@ pub fn EnrichedProjectCard(project: EnrichedProject, #[props(default = false)] f
                             }
                         }
                         if let Some(demo) = &project.demo_url {
-                            div { 
+                            div {
                                 class: "relative group/demo",
                                 title: demo_tooltip.unwrap_or(""),
                                 Button {
@@ -548,7 +577,7 @@ pub fn EnrichedProjectCard(project: EnrichedProject, #[props(default = false)] f
 }
 
 /// Projects Section using Enriched Projects (F17)
-/// 
+///
 /// Uses EnrichedProjectCard to show GitHub-sourced demo URLs with visual indicator
 #[component]
 pub fn EnrichedProjectsSection() -> Element {
@@ -708,7 +737,7 @@ mod tests {
 
     #[test]
     fn test_enrich_project_no_homepage_in_github() {
-        // oc_diagdoc has no homepage in static data
+        // Case: Project has github_url, but repo has NO homepage (nvim-config)
         let project = Project {
             id: "test",
             title: "Test",
@@ -716,7 +745,7 @@ mod tests {
             long_description: "Test",
             technologies: vec![],
             status: ProjectStatus::Active,
-            github_url: Some("https://github.com/enerBydev/oc_diagdoc"),
+            github_url: Some("https://github.com/enerBydev/nvim-config"),
             demo_url: None,
             image_override: None,
             image_fallback: "🧪",
@@ -724,7 +753,7 @@ mod tests {
 
         let enriched = enrich_project_with_github(project);
 
-        // Should remain None since oc_diagdoc has no homepage
+        // Should remain None since nvim-config has no homepage
         assert_eq!(enriched.demo_url, None);
         assert_eq!(enriched.demo_url_source, DemoUrlSource::None);
     }
@@ -785,10 +814,13 @@ mod tests {
         // enerby-dev project should have demo_url (either manual or from GitHub)
         let enriched = get_enriched_project_by_id("enerby-dev");
         assert!(enriched.is_some(), "enerby-dev project should exist");
-        
+
         let project = enriched.unwrap();
-        assert!(project.demo_url.is_some(), "enerby-dev should have a demo_url");
-        
+        assert!(
+            project.demo_url.is_some(),
+            "enerby-dev should have a demo_url"
+        );
+
         // The demo URL should be the actual website
         let demo = project.demo_url.unwrap();
         assert!(
@@ -803,10 +835,10 @@ mod tests {
         // Test the complete enrichment flow from static projects to enriched
         let static_projects = get_projects();
         let enriched_projects = get_projects_enriched();
-        
+
         // Count should match
         assert_eq!(static_projects.len(), enriched_projects.len());
-        
+
         // Each project should have preserved its original data
         for (static_p, enriched_p) in static_projects.iter().zip(enriched_projects.iter()) {
             assert_eq!(static_p.id, enriched_p.id);
@@ -819,7 +851,7 @@ mod tests {
     fn test_integration_manual_demo_priority() {
         // Verify that manual demo_url is never overwritten by GitHub
         let enriched = get_projects_enriched();
-        
+
         for project in &enriched {
             if project.demo_url_source == DemoUrlSource::Manual {
                 // Found a project with manual demo - verify it wasn't replaced
@@ -842,7 +874,7 @@ mod tests {
     fn test_integration_no_orphan_github_sources() {
         // A GitHub source should only exist if there's actually a demo_url
         let enriched = get_projects_enriched();
-        
+
         for project in &enriched {
             if project.demo_url_source == DemoUrlSource::GitHub {
                 assert!(
@@ -864,14 +896,23 @@ mod tests {
     #[test]
     fn test_integration_all_projects_have_valid_structure() {
         let enriched = get_projects_enriched();
-        
+
         for project in &enriched {
             // Basic validation
             assert!(!project.id.is_empty(), "Project ID should not be empty");
-            assert!(!project.title.is_empty(), "Project title should not be empty");
-            assert!(!project.description.is_empty(), "Project description should not be empty");
-            assert!(!project.image_fallback.is_empty(), "Fallback emoji should exist");
-            
+            assert!(
+                !project.title.is_empty(),
+                "Project title should not be empty"
+            );
+            assert!(
+                !project.description.is_empty(),
+                "Project description should not be empty"
+            );
+            assert!(
+                !project.image_fallback.is_empty(),
+                "Fallback emoji should exist"
+            );
+
             // If has github_url, should be valid
             if let Some(ref url) = project.github_url {
                 assert!(
@@ -880,7 +921,7 @@ mod tests {
                     url
                 );
             }
-            
+
             // If has demo_url, should be valid URL
             if let Some(ref url) = project.demo_url {
                 assert!(

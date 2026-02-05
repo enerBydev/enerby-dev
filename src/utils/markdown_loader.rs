@@ -50,7 +50,8 @@ pub fn load_markdown_posts() -> Vec<MarkdownPost> {
                     if let Some(data) = result.data {
                         if let Ok(frontmatter) = data.deserialize::<Frontmatter>() {
                             // Calculate read time from content if not provided
-                            let read_time_minutes = frontmatter.read_time
+                            let read_time_minutes = frontmatter
+                                .read_time
                                 .unwrap_or_else(|| calculate_read_time(&result.content));
 
                             let parser = Parser::new(&result.content);

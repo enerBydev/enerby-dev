@@ -69,11 +69,7 @@ pub fn get_post_by_slug(slug: &str) -> Option<BlogPost> {
 #[component]
 pub fn BlogSection() -> Element {
     let posts = get_published_posts();
-    let recent_posts: Vec<_> = posts
-        .into_iter()
-        .filter(|p| p.featured)
-        .take(3)
-        .collect();
+    let recent_posts: Vec<_> = posts.into_iter().filter(|p| p.featured).take(3).collect();
 
     rsx! {
         Section { id: "blog",

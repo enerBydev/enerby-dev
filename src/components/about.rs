@@ -125,10 +125,10 @@ fn HighlightCard(number: &'static str, label: &'static str) -> Element {
 fn DynamicLocCounter() -> Element {
     let stats = get_github_stats();
     let loc_formatted = format_loc(stats.total_loc);
-    
+
     rsx! {
         Card {
-            div { 
+            div {
                 class: "text-center py-2",
                 title: "Lines of code across {stats.repos.len()} repositories",
                 p { class: "text-3xl font-bold text-primary font-display", "{loc_formatted}" }
@@ -144,10 +144,10 @@ fn DynamicLocCounter() -> Element {
 fn DynamicProjectsCounter() -> Element {
     let projects = get_projects();
     let count = projects.len();
-    
+
     rsx! {
         Card {
-            div { 
+            div {
                 class: "text-center py-2",
                 title: "Active repositories on GitHub",
                 p { class: "text-3xl font-bold text-primary font-display", "{count}" }

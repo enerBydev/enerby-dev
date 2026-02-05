@@ -1,6 +1,6 @@
 //! GitHub Statistics Module
 //! Provides Lines of Code statistics for the portfolio
-//! 
+//!
 //! Current implementation: Static mock with realistic values
 //! Future: GitHub API integration for real-time stats
 
@@ -16,16 +16,16 @@ pub struct GitHubStats {
 /// Configuration for which repos to track
 pub const TRACKED_REPOS: &[&str] = &[
     "enerBydev/enerby-dev",
-    "enerBydev/oc_diagdoc", 
+    "enerBydev/oc_diagdoc",
     "enerBydev/Affinity-Legacy-Bridge",
     "enerBydev/VideoGIniusAI",
 ];
 
 /// Get current GitHub statistics
-/// 
+///
 /// # Current Implementation
 /// Returns mock data with realistic estimates.
-/// 
+///
 /// # Future Implementation
 /// Will use GitHub API to calculate real LOC:
 /// - Fetch repo stats via REST API
@@ -38,7 +38,7 @@ pub fn get_github_stats() -> GitHubStats {
     // - Affinity-Legacy-Bridge: ~500 LOC (Shell scripts)
     // - VideoGIniusAI: ~15,000 LOC (Nuxt 3/Vue)
     // Total: ~35,500 LOC
-    
+
     GitHubStats {
         total_loc: 35_847, // Realistic mock value based on real repos
         repos: TRACKED_REPOS.iter().map(|s| s.to_string()).collect(),
