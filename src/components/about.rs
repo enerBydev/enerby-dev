@@ -3,6 +3,7 @@
 
 use crate::components::layout_components::{Container, Section};
 use crate::components::molecules::{Card, SectionTitle};
+use crate::utils::{format_loc, get_github_stats};
 use dioxus::prelude::*;
 
 /// About Section - Biography and experience
@@ -35,7 +36,8 @@ pub fn AboutSection() -> Element {
                             HighlightCard { number: "5+", label: "Years Experience" }
                             HighlightCard { number: "50+", label: "Projects Completed" }
                             HighlightCard { number: "10+", label: "Technologies" }
-                            HighlightCard { number: "∞", label: "Lines of Code" }
+                            // Dynamic Lines of Code counter (F10)
+                            DynamicLocCounter {}
                         }
                     }
 
@@ -115,4 +117,24 @@ fn HighlightCard(number: &'static str, label: &'static str) -> Element {
     }
 }
 
+/// Dynamic Lines of Code Counter (F10)
+/// Displays real LOC from github_stats module
+#[component]
+fn DynamicLocCounter() -> Element {
+    let stats = get_github_stats();
+    let loc_formatted = format_loc(stats.total_loc);
+    
+    rsx! {
+        Card {
+            div { 
+                class: "text-center py-2",
+                title: "Lines of code across {stats.repos.len()} repositories",
+                p { class: "text-3xl font-bold text-primary font-display", "{loc_formatted}" }
+                p { class: "text-xs text-muted uppercase tracking-wider mt-1", "Lines of Code" }
+            }
+        }
+    }
+}
+
 // InterestCard component removed - Beyond Code section eliminated
+

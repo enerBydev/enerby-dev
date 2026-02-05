@@ -1,11 +1,15 @@
 //! Utils Module - Helper functions
 //! Common utilities for formatting, parsing, etc.
 
+pub mod github_stats;
 pub mod markdown_loader;
 pub mod project_images;
 
 // Re-export project_images public API
 pub use project_images::{get_project_image_url, has_real_image, ImageSource};
+
+// Re-export github_stats public API
+pub use github_stats::{format_loc, get_github_stats, GitHubStats};
 
 use pulldown_cmark::{html, Parser};
 
