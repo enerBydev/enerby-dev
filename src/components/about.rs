@@ -3,6 +3,7 @@
 
 use crate::components::layout_components::{Container, Section};
 use crate::components::molecules::{Card, SectionTitle};
+use crate::components::projects::get_projects;
 use crate::utils::{format_loc, get_github_stats};
 use dioxus::prelude::*;
 
@@ -34,7 +35,8 @@ pub fn AboutSection() -> Element {
                         // Highlights/Facts (P7-A4)
                         div { class: "grid grid-cols-2 gap-4 mt-8",
                             HighlightCard { number: "5+", label: "Years Experience" }
-                            HighlightCard { number: "50+", label: "Projects Completed" }
+                            // Dynamic Living Projects counter
+                            DynamicProjectsCounter {}
                             HighlightCard { number: "10+", label: "Technologies" }
                             // Dynamic Lines of Code counter (F10)
                             DynamicLocCounter {}
@@ -136,5 +138,21 @@ fn DynamicLocCounter() -> Element {
     }
 }
 
-// InterestCard component removed - Beyond Code section eliminated
-
+/// Dynamic Living Projects Counter
+/// Counts projects dynamically from projects.rs
+#[component]
+fn DynamicProjectsCounter() -> Element {
+    let projects = get_projects();
+    let count = projects.len();
+    
+    rsx! {
+        Card {
+            div { 
+                class: "text-center py-2",
+                title: "Active repositories on GitHub",
+                p { class: "text-3xl font-bold text-primary font-display", "{count}" }
+                p { class: "text-xs text-muted uppercase tracking-wider mt-1", "Living Projects" }
+            }
+        }
+    }
+}
