@@ -82,13 +82,13 @@ pub fn get_projects() -> Vec<Project> {
             id: "enerby-dev",
             title: "enerby.dev",
             
-            description_en: "Personal portfolio built with Rust and Dioxus. Cyberpunk themed with modern web technologies.",
-            description_es: "Portafolio personal construido con Rust y Dioxus. Temática cyberpunk con tecnologías web modernas.",
+            description_en: "Strategic SPA built with Rust and Dioxus (WASM). Demonstrating architecture-first frontend development.",
+            description_es: "SPA estratégica construida con Rust y Dioxus (WASM). Demostrando desarrollo frontend basado en arquitectura.",
             
-            long_description_en: "Full-featured portfolio showcasing my work, skills, and blog. Built entirely in Rust using Dioxus, localized with a static-first i18n approach, neon aesthetic, glassmorphism, and smooth animations.",
-            long_description_es: "Portafolio completo mostrando mi trabajo, habilidades y blog. Construido enteramente en Rust usando Dioxus, localizado con enfoque i18n estático, estética neón, glassmorphism y animaciones suaves.",
+            long_description_en: "More than a portfolio, this is a statement. Designed to bridge Systems Programming and UI/UX. \n\nStrategy: Leverage Rust's memory safety for bulletproof logic. \nPsychology: Sub-two-second interactivity to project immediate efficiency and trust. \nArchitecture: Strict Atomic Design where every component is an isolated, testable unit. It represents the fusion of 'Safe' and 'Fast'.",
+            long_description_es: "Más que un portafolio, es una declaración de principios. Diseñado para unir la Programación de Sistemas con UI/UX. \n\nEstrategia: Utilizar la seguridad de memoria de Rust para una lógica a prueba de balas. \nPsicología: Interactividad instantánea para proyectar eficiencia y confianza absoluta. \nArquitectura: Diseño Atómico estricto donde cada componente es una unidad aislada. Representa la fusión de 'Seguro' y 'Rápido'.",
             
-            technologies: vec!["Rust", "Dioxus", "WebAssembly", "Tailwind CSS"],
+            technologies: vec!["Rust", "Dioxus", "WASM", "Tailwind", "Atomic Design"],
             status: ProjectStatus::Featured,
             github_url: Some("https://github.com/enerBydev/enerby-dev"),
             demo_url: Some("https://enerbydev.pages.dev"),
@@ -136,13 +136,13 @@ pub fn get_projects() -> Vec<Project> {
             id: "videoginiusai",
             title: "VideoGIniusAI",
             
-            description_en: "AI-powered video analysis and generation platform. Content automation with Nuxt 3.",
-            description_es: "Plataforma de edición de video potenciada por IA. Creación de contenido automatizada con Nuxt 3.",
+            description_en: "AI-powered video platform. Content automation with Nuxt 4, Vue.js, and Nitro/UnJS ecosystem.",
+            description_es: "Plataforma de video con IA. Automatización con Nuxt 4, Vue.js y el ecosistema Nitro/UnJS.",
             
-            long_description_en: "Web application for video generation/edition using AI. Built with Nuxt 3, integrates AI models to automate multimedia content creation.",
-            long_description_es: "Aplicación web para generación y edición de video usando inteligencia artificial. Construida con Nuxt 3, integra modelos de IA para automatizar la creación de contenido multimedia.",
+            long_description_en: "Web application for video generation/edition using AI. Built with Nuxt 4 (Vue 3), utilizes Nitro for server-side logic and the UnJS toolchain for optimized performance. Integrates AI models to automate multimedia content creation.",
+            long_description_es: "Aplicación web para generación/edición de video con IA. Construida con Nuxt 4 (Vue 3), utiliza Nitro para lógica de servidor y el toolchain UnJS para rendimiento optimizado. Integra modelos de IA para automatizar contenido.",
             
-            technologies: vec!["Nuxt 4", "Vue.js", "AI", "TypeScript"],
+            technologies: vec!["Nuxt 4", "Vue.js", "Nitro", "UnJS", "AI"],
             status: ProjectStatus::Active,
             github_url: Some("https://github.com/enerBydev/VideoGIniusAI"),
             demo_url: None,
