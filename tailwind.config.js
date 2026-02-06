@@ -4,6 +4,14 @@ module.exports = {
     "./src/**/*.rs",
     "./index.html"
   ],
+  safelist: [
+    {
+      pattern: /prose/,
+      variants: ['lg', 'md', 'sm', 'hover'],
+    },
+    'prose-invert',
+    'max-w-none',
+  ],
   theme: {
     extend: {
       // ========================================

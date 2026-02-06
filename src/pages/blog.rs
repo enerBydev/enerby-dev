@@ -57,47 +57,34 @@ pub fn BlogPage() -> Element {
 pub fn BlogPostPage(slug: String) -> Element {
     let post = get_post_by_slug(&slug);
     let lang = crate::i18n::I18N_CONFIG.read().language;
+    use crate::components::blog::{BlogPostHeader, BlogPostContent, BlogPostNavigator};
 
     rsx! {
         Section { id: "blog-post",
             Container {
-                // Back Button
-                div { class: "mb-8 flex justify-center",
-                    Button {
-                        variant: ButtonVariant::Ghost,
-                        to: Route::BlogPage {},
-                        "← Back to Blog"
-                    }
-                }
+                // Atomic Navigator (I20-B)
+                BlogPostNavigator {}
 
                 if let Some(p) = post {
-                    article { class: "max-w-3xl mx-auto",
-                        // Header
-                        header { class: "mb-8 text-center",
-                            h1 { class: "text-3xl font-bold text-white mb-4", "{p.title(&lang)}" }
-                            div { class: "flex items-center justify-center gap-4 text-muted",
-                                span { "{p.date}" }
-                                span { "•" }
-                                span { "{p.read_time} min read" }
-                            }
-                        }
+                    article { class: "max-w-4xl mx-auto",
+                        // Atomic Header (I20-B)
+                        BlogPostHeader { post: p.clone(), lang: lang }
 
-                        // Tags
-                        div { class: "flex flex-wrap justify-center gap-2 mb-8",
-                            for tag in p.tags.iter() {
-                                span { class: "px-3 py-1 bg-primary/20 text-primary rounded-full text-sm", "{tag}" }
-                            }
-                        }
-
-                        // Content
-                        div { class: "prose prose-invert max-w-none bg-bg-card/50 rounded-xl p-8 border border-white/5",
-                            div { dangerous_inner_html: "{p.content(&lang)}" }
-                        }
+                        // Atomic Content (I20-B)
+                        BlogPostContent { post: p.clone(), lang: lang }
                     }
                 } else {
                     div { class: "text-center py-16",
                         h1 { class: "text-2xl font-bold text-white mb-4", "Post not found" }
                         p { class: "text-muted", "The post \"{slug}\" does not exist." }
+                        
+                        div { class: "mt-8",
+                            crate::components::atoms::Button {
+                                variant: crate::components::atoms::ButtonVariant::Primary,
+                                to: Route::BlogPage {},
+                                "Return to Archive"
+                            }
+                        }
                     }
                 }
             }

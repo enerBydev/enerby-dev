@@ -11,6 +11,14 @@ use crate::utils::markdown_loader::{load_markdown_posts, PostLanguage};
 use crate::i18n::Language;
 use std::collections::HashMap;
 
+pub mod post_header;
+pub mod post_content;
+pub mod post_navigator;
+
+pub use post_header::*;
+pub use post_content::*;
+pub use post_navigator::*;
+
 /// Post Status (P10-A4)
 #[derive(Clone, PartialEq, Copy, Debug)]
 pub enum PostStatus {
