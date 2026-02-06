@@ -1,8 +1,8 @@
 ---
 slug: building-portfolio-rust-dioxus
-title: Construyendo un Portfolio con Rust y Dioxus
+title: Building a Portfolio with Rust and Dioxus
 date: 2026-02-04
-excerpt: Deep dive en cómo construí este portfolio usando Dioxus, el framework React-like de Rust. Arquitectura, componentes y lecciones aprendidas.
+excerpt: Deep dive into how I built this portfolio using Dioxus, the React-like framework for Rust. Architecture, components, and lessons learned.
 tags:
   - Rust
   - Dioxus
@@ -11,15 +11,15 @@ tags:
 featured: true
 ---
 
-# Construyendo enerby.dev
+# Building enerby.dev
 
-Este portfolio no es solo una muestra de mi trabajo, es una **declaración de intenciones**: Rust está listo para el Frontend.
+This portfolio isn't just a showcase of my work—it's a **statement of intent**: Rust is ready for the Frontend.
 
-En este post, compartiré las decisiones técnicas, los desafíos superados y las lecciones aprendidas mientras construía este sitio con tecnologías modernas.
+In this post, I'll share the technical decisions, challenges overcome, and lessons learned while building this site with modern technologies.
 
-## ¿Por qué Dioxus?
+## Why Dioxus?
 
-Dioxus es un framework portable para construir interfaces de usuario cross-platform. Se siente muy similar a React, pero aprovecha todo el poder del sistema de tipos de Rust.
+Dioxus is a portable framework for building cross-platform user interfaces. It feels very similar to React, but leverages the full power of Rust's type system.
 
 ```rust
 fn app() -> Element {
@@ -32,33 +32,33 @@ fn app() -> Element {
 }
 ```
 
-### Mi Perspectiva: Más Nuxt que React
+### My Perspective: More Nuxt than React
 
-Aunque Dioxus se promociona como "React for Rust", en mi experiencia personal encuentro más similitudes con el ecosistema Vue/Nuxt:
+Although Dioxus is marketed as "React for Rust", in my personal experience I find more similarities with the Vue/Nuxt ecosystem:
 
-- **Routing declarativo**: Similar a `pages/` de Nuxt
-- **Componentes reactivos**: El modelo mental es muy parecido
-- **Integración fullstack**: Con Dioxus Fullstack, recuerda a Nitro
-- **Hidratación SSR**: Funciona de manera análoga
+- **Declarative routing**: Similar to Nuxt's `pages/`
+- **Reactive components**: The mental model is very similar
+- **Fullstack integration**: With Dioxus Fullstack, it reminds me of Nitro
+- **SSR hydration**: Works analogously
 
-Esta familiaridad con Nuxt me permitió adaptar rápidamente mis conocimientos al nuevo paradigma.
+This familiarity with Nuxt allowed me to quickly adapt my knowledge to the new paradigm.
 
-## Arquitectura del Proyecto
+## Project Architecture
 
-El proyecto sigue una estructura limpia y modular:
+The project follows a clean and modular structure:
 
 ```
 src/
-├── components/     # UI reutilizable (atoms, molecules)
-├── pages/          # Vistas principales (Home, Blog, Projects)
-├── layouts/        # Estructuras comunes (Header, Footer)
-├── routes/         # Definición de rutas
-└── utils/          # Helpers y utilidades
+├── components/     # Reusable UI (atoms, molecules)
+├── pages/          # Main views (Home, Blog, Projects)
+├── layouts/        # Common structures (Header, Footer)
+├── routes/         # Route definitions
+└── utils/          # Helpers and utilities
 ```
 
-### Sistema de Componentes
+### Component System
 
-Implementé un sistema de design tokens usando CSS variables:
+I implemented a design tokens system using CSS variables:
 
 ```css
 :root {
@@ -68,60 +68,60 @@ Implementé un sistema de design tokens usando CSS variables:
 }
 ```
 
-Esto permite consistencia visual y facilita el theming.
+This allows visual consistency and facilitates theming.
 
-## El Efecto Glitch
+## The Glitch Effect
 
-Uno de los mayores desafíos fue implementar el efecto glitch del header sin sacrificar accesibilidad ni rendimiento.
+One of the biggest challenges was implementing the header's glitch effect without sacrificing accessibility or performance.
 
-### Solución: CSS Puro
+### Solution: Pure CSS
 
-Opté por keyframes CSS personalizados en lugar de JavaScript:
+I opted for custom CSS keyframes instead of JavaScript:
 
 ```css
 @keyframes glitch {
   0%, 100% { clip-path: inset(0 0 0 0); }
   10% { clip-path: inset(10% 0 85% 0); }
   20% { clip-path: inset(80% 0 5% 0); }
-  /* ... más frames */
+  /* ... more frames */
 }
 ```
 
-### Beneficios
+### Benefits
 
-1. **Cero JavaScript**: No bloquea el main thread
-2. **GPU Accelerated**: Animaciones fluidas a 60fps
-3. **Respeta `prefers-reduced-motion`**: Accesible por defecto
+1. **Zero JavaScript**: Doesn't block the main thread
+2. **GPU Accelerated**: Smooth animations at 60fps
+3. **Respects `prefers-reduced-motion`**: Accessible by default
 
-## WebAssembly en Producción
+## WebAssembly in Production
 
-Dioxus compila a WASM, lo que significa:
+Dioxus compiles to WASM, which means:
 
-- **Bundle pequeño**: ~300KB gzipped
-- **Rendimiento nativo**: Rust optimizado
-- **Seguridad de memoria**: Sin memory leaks
+- **Small bundle**: ~300KB gzipped
+- **Native performance**: Optimized Rust
+- **Memory safety**: No memory leaks
 
-El resultado es una SPA ultra-rápida con tiempos de carga mínimos.
+The result is an ultra-fast SPA with minimal load times.
 
-## Lecciones Aprendidas
+## Lessons Learned
 
-### Lo Bueno
-- **Type Safety total**: Los errores se capturan en compile time
-- **Hot Reload**: El DX es excelente
-- **Comunidad activa**: Discord muy responsive
+### The Good
+- **Complete Type Safety**: Errors are caught at compile time
+- **Hot Reload**: The DX is excellent
+- **Active community**: Very responsive Discord
 
-### Los Retos
-- **Ecosistema joven**: Menos componentes listos para usar
-- **Debugging WASM**: Requiere herramientas específicas
-- **Curva de aprendizaje**: Rust + frontend es intenso
+### The Challenges
+- **Young ecosystem**: Fewer ready-to-use components
+- **WASM debugging**: Requires specific tools
+- **Learning curve**: Rust + frontend is intense
 
-## Conclusión
+## Conclusion
 
-Construir con Dioxus ha sido una experiencia increíble. La seguridad de tipos de Rust en el frontend elimina una clase entera de bugs que plagan las aplicaciones JavaScript.
+Building with Dioxus has been an incredible experience. Rust's type safety in the frontend eliminates an entire class of bugs that plague JavaScript applications.
 
-**¿Recomiendo Dioxus?** Absolutamente, especialmente si:
-- Ya conoces Rust
-- Valoras la seguridad de tipos
-- Quieres explorar WASM en producción
+**Do I recommend Dioxus?** Absolutely, especially if:
+- You already know Rust
+- You value type safety
+- You want to explore WASM in production
 
-El futuro del frontend puede tener más Rust de lo que pensamos. 🦀
+The future of frontend might have more Rust than we think. 🦀
