@@ -1,2 +1,2 @@
-1. [ ] Necesito cambiar thum.io por otro mejor
+1. [ ] Necesito cambiar thum.io (generador de screenshoots webs) por otro mejor
 2. [ ] Necesito que analices absolutamente todo el proyecto y encuentres la forma en la que se esta traduciendo todo el sitio, No importa en que idioma esta hecha el portfolio, el visitante siempre debera verlo en su idioma del sistema que ya el tiene configurado, entonces debemos investigar cual es la mejor manera para realizar una actualizacion mas automatica autonoma en lugar de la manual que estamos usando actualmente..
