@@ -1,28 +1,29 @@
 ---
 slug: nuxt3-supabase-cloudflare
-title: "Stack Moderno: Nuxt 3 + Supabase + Cloudflare"
+title: "Modern Stack: Nuxt 3 + Supabase + Cloudflare"
 date: 2026-02-04
-excerpt: Configurando un stack fullstack moderno con Nuxt 3, Supabase para auth/database y Cloudflare Pages para deployment edge.
+excerpt: Setting up a modern fullstack stack with Nuxt 3, Supabase for auth/database, and Cloudflare Pages for edge deployment.
 tags:
-  - Nuxt 3
+  - Nuxt 4
   - Vue.js
   - Supabase
   - Cloudflare
 featured: false
 ---
 
-# El Stack Moderno
+# The Modern Stack
 
-Para aplicaciones web rápidas y escalables, la combinación de Nuxt 3, Supabase y Cloudflare es imbatible.
+For fast and scalable web applications, the combination of Nuxt 3, Supabase, and Cloudflare is unbeatable.
 
 ## Nuxt 3
 
-Nuxt 3 trae renderizado híbrido, auto-imports y una experiencia de desarrollo superior.
+Nuxt 3 brings hybrid rendering, auto-imports, and a superior development experience.
 
 ## Supabase
 
-La alternativa open source a Firebase. PostgreSQL real, autenticación y edge functions.
+The open-source alternative to Firebase. Real PostgreSQL, authentication, and edge functions.
 
 ## Cloudflare Pages
 
-Deployment global en segundos. La integración con Nuxt vía Nitro es perfecta.
+Global deployment in seconds. The integration with Nuxt via Nitro is perfect.
+

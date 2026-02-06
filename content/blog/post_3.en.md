@@ -1,8 +1,8 @@
 ---
 slug: hexagonal-architecture-rust
-title: "Arquitectura Hexagonal en Rust: Guía Práctica"
+title: "Hexagonal Architecture in Rust: A Practical Guide"
 date: 2026-02-04
-excerpt: Cómo implementar Clean Architecture con Domain-Driven Design en proyectos Rust. Ports, Adapters y Repository Pattern explicados.
+excerpt: How to implement Clean Architecture with Domain-Driven Design in Rust projects. Ports, Adapters, and Repository Pattern explained.
 tags:
   - Rust
   - Architecture
@@ -11,13 +11,13 @@ tags:
 featured: true
 ---
 
-# Arquitectura Hexagonal en Rust
+# Hexagonal Architecture in Rust
 
-La arquitectura hexagonal, o puertos y adaptadores, permite desacoplar tu lógica de negocio de los detalles técnicos.
+Hexagonal architecture, or ports and adapters, allows you to decouple your business logic from technical details.
 
-## El Dominio
+## The Domain
 
-En el centro de todo está tu dominio. En Rust, esto se modela típicamente con structs y enums puros.
+At the center of everything is your domain. In Rust, this is typically modeled with pure structs and enums.
 
 ```rust
 pub struct User {
@@ -26,12 +26,13 @@ pub struct User {
 }
 ```
 
-## Puertos (Traits)
+## Ports (Traits)
 
-Los puertos definen cómo el mundo exterior interactúa con la aplicación.
+Ports define how the outside world interacts with the application.
 
-## Adaptadores
+## Adapters
 
-Los adaptadores implementan los puertos.
+Adapters implement the ports.
 
-> "La dependencia debe apuntar hacia adentro, hacia las reglas de alto nivel."
+> "Dependencies should point inward, toward high-level rules."
+
