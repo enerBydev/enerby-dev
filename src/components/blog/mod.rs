@@ -7,7 +7,7 @@ use crate::components::molecules::{Card, SectionTitle};
 use crate::routes::Route;
 use dioxus::prelude::*;
 
-use crate::utils::markdown_loader::{load_markdown_posts, PostLanguage};
+use crate::utils::markdown_loader::{load_markdown_posts, PostLanguage, consolidate_posts_by_canonical_slug, get_processed_post_by_slug, ProcessedMarkdownPost};
 use crate::i18n::Language;
 use std::collections::HashMap;
 
@@ -27,10 +27,10 @@ pub enum PostStatus {
 }
 
 /// Blog Post data structure (P10-A1, P10-A2)
-/// Updated for i18n (F18-D)
+/// Updated for i18n (F18-D) and slug normalization
 #[derive(Clone, PartialEq, Debug)]
 pub struct BlogPost {
-    pub slug: String,
+    pub slug: String,  // Now uses canonical_slug from _en.md frontmatter
     
     // Internal localized fields
     title_en: String,
@@ -73,26 +73,25 @@ impl BlogPost {
 }
 
 /// Get all blog posts - Dynamic from Markdown (F8)
-/// Consolidated by slug across languages
+/// Updated to use canonical slug normalization
 pub fn get_blog_posts() -> Vec<BlogPost> {
-    let raw_posts = load_markdown_posts();
-    let mut grouped_posts: HashMap<String, Vec<crate::utils::markdown_loader::MarkdownPost>> = HashMap::new();
+    let processed_posts = consolidate_posts_by_canonical_slug();
+    let mut grouped_posts: HashMap<String, Vec<ProcessedMarkdownPost>> = HashMap::new();
     
-    // Group by file_slug
-    for post in raw_posts {
-        grouped_posts.entry(post.file_slug.clone()).or_default().push(post);
+    // Group by canonical_slug to find EN/ES variants
+    for post in processed_posts {
+        grouped_posts.entry(post.canonical_slug.clone()).or_default().push(post);
     }
     
     let mut posts: Vec<BlogPost> = grouped_posts
         .into_iter()
-        .filter_map(|(slug, variants)| {
-            // We need at least an EN version to form a valid post (Source of Truth)
-            // Or just any version? Let's assume EN is primary.
+        .filter_map(|(canonical_slug, variants)| {
+            // Find EN version as source of truth
             let en_variant = variants.iter().find(|p| p.language == PostLanguage::EN);
             let es_variant = variants.iter().find(|p| p.language == PostLanguage::ES);
             
             if let Some(base) = en_variant {
-                let tags = base.frontmatter.tags.clone(); // Shared tags?? Or localized tags? Assuming shared for now.
+                let tags = base.frontmatter.tags.clone();
                 
                 // ES Fallback: Use ES if present, else clone EN
                 let (title_es, excerpt_es, content_es) = if let Some(es) = es_variant {
@@ -102,7 +101,7 @@ pub fn get_blog_posts() -> Vec<BlogPost> {
                 };
 
                 Some(BlogPost {
-                    slug: slug, // Use the file slug as the ID
+                    slug: canonical_slug, // Use canonical slug from _en.md
                     title_en: base.frontmatter.title.clone(),
                     title_es,
                     excerpt_en: base.frontmatter.excerpt.clone(),
@@ -116,7 +115,8 @@ pub fn get_blog_posts() -> Vec<BlogPost> {
                     featured: base.frontmatter.featured,
                 })
             } else {
-                // Warning: Found ES post without EN base? Skip for now.
+                // Warning: Found ES post without EN base
+                eprintln!("Warning: Found ES post without EN base for slug: {}", canonical_slug);
                 None
             }
         })
@@ -136,7 +136,7 @@ pub fn get_published_posts() -> Vec<BlogPost> {
         .collect()
 }
 
-/// Get post by slug
+/// Get post by slug - Updated for canonical slug lookup
 pub fn get_post_by_slug(slug: &str) -> Option<BlogPost> {
     get_blog_posts().into_iter().find(|p| p.slug == slug)
 }
