@@ -109,7 +109,7 @@ pub fn get_projects() -> Vec<Project> {
             technologies: vec!["Rust", "CLI", "WalkDir", "Serde", "Clap"],
             status: ProjectStatus::Featured,
             github_url: Some("https://github.com/enerBydev/oc_diagdoc"),
-            demo_url: Some("https://www.google.com"),
+            demo_url: Some("https://diag-doc.pages.dev"),
             image_override: None,
             image_fallback: "⚛️",
         },
