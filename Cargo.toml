@@ -37,8 +37,9 @@ dioxus-free-icons = { version = "0.9", features = [
 web-sys = { version = "0.3.85", features = ["Window", "Navigator", "Storage"] }
 
 [features]
-default = ["web"]
+default = ["web", "construction"]
 web = []
+construction = []
 
 # =============================================================================
 # RELEASE PROFILE - Optimized for Web (P14-A1, P14-A2)

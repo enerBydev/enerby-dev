@@ -49,3 +49,6 @@ node_modules/
 
 # WASM artifacts generated during development
 *.wasm.map
+
+# CLAUDE.md global instructions
+CLAUDE.md
